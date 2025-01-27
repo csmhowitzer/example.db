@@ -1,0 +1,16 @@
+SELECT
+    u.FName,
+    u.LName,
+    r.Name,
+    t.TaskName,
+    t.State,
+    ta.AssignedDate SDate,
+    t.DueDate FDate,
+    julianday(AssignedDate) - julianday('now') AS TSA,
+    julianday('now') - julianday(t.DueDate) AS TL
+FROM Users u
+    INNER JOIN UserRoles ur ON u.ID = ur.UserId
+    INNER JOIN Roles r ON r.ID = ur.RoleId
+    INNER JOIN TaskAssignments ta ON u.ID = ta.UserId
+    INNER JOIN Tasks t ON t.ID = ta.TaskId
+ORDER BY t.State

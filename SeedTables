@@ -1,0 +1,17 @@
+INSERT INTO Users (ID, FName, LName, Email, CreatedDate, ModifiedData) VALUES
+(1, 'John', 'Doe', 'john.doe@example.com', '2025-01-01 08:00:00', '2025-01-01 08:00:00'),
+(2, 'Jane', 'Smith', 'jane.smith@example.com', '2025-01-02 09:00:00', '2025-01-02 09:00:00'),
+(3, 'Mike', 'Johnson', NULL, '2025-01-03 10:30:00', '2025-01-03 10:30:00'),
+(4, 'Emily', 'Brown', 'emily.brown@example.com', '2025-01-04 12:00:00', '2025-01-04 12:00:00');
+
+INSERT INTO Roles (ID, Name, Desc, CreatedDate, ModifiedDate) VALUES
+(1, 'Admin', 'Administrator with full permissions', '2025-01-01 08:00:00', '2025-01-01 08:00:00'),
+(2, 'User', 'Regular user with limited permissions', '2025-01-02 09:00:00', '2025-01-02 09:00:00'),
+(3, 'Moderator', 'Can moderate content and user activities', '2025-01-03 10:30:00', '2025-01-03 10:30:00');
+
+INSERT INTO UserRoles (UserId, RoleId, CreatedDate) VALUES
+(1, 1, '2025-01-01 08:00:00'),  -- John is Admin
+(2, 2, '2025-01-02 09:00:00'),  -- Jane is User
+(3, 2, '2025-01-03 10:30:00'),  -- Mike is User
+(4, 3, '2025-01-04 12:00:00');  -- Emily is Moderator
+
