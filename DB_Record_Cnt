@@ -1,0 +1,35 @@
+
+SELECT 
+    SUM(record_count) AS TotalRecords 
+FROM (
+    SELECT 'BusinessUnits' AS table_name, COUNT(*) AS record_count FROM BusinessUnits UNION ALL
+    SELECT 'Departments', COUNT(*) FROM Departments UNION ALL
+    SELECT 'DepartmentBusinessUnit', COUNT(*) FROM DepartmentBusinessUnit UNION ALL
+    SELECT 'Roles', COUNT(*) FROM Roles UNION ALL
+    SELECT 'Employees', COUNT(*) FROM Employees UNION ALL
+    SELECT 'DepartmentEmployees', COUNT(*) FROM DepartmentEmployees UNION ALL
+    SELECT 'EmployeeRoles', COUNT(*) FROM EmployeeRoles UNION ALL
+    SELECT 'Teams', COUNT(*) FROM Teams UNION ALL
+    SELECT 'TeamMembers', COUNT(*) FROM TeamMembers UNION ALL
+    SELECT 'Applications', COUNT(*) FROM Applications UNION ALL
+    SELECT 'Projects', COUNT(*) FROM Projects UNION ALL
+    SELECT 'ApplicationProjects', COUNT(*) FROM ApplicationProjects UNION ALL
+    SELECT 'Environments', COUNT(*) FROM Environments UNION ALL
+    SELECT 'ApplicationEnvironments', COUNT(*) FROM ApplicationEnvironments UNION ALL
+    SELECT 'FeatureRequestTypes', COUNT(*) FROM FeatureRequestTypes UNION ALL
+    SELECT 'Requesters', COUNT(*) FROM Requesters UNION ALL
+    SELECT 'FeatureRequests', COUNT(*) FROM FeatureRequests UNION ALL
+    SELECT 'FeatureRequestStatus', COUNT(*) FROM FeatureRequestStatus UNION ALL
+    SELECT 'FeatureRequestStatusHistory', COUNT(*) FROM FeatureRequestStatusHistory UNION ALL
+    SELECT 'TaskStatus', COUNT(*) FROM TaskStatus UNION ALL
+    SELECT 'Priorities', COUNT(*) FROM Priorities UNION ALL
+    SELECT 'Tasks', COUNT(*) FROM Tasks UNION ALL
+    SELECT 'TaskAssignments', COUNT(*) FROM TaskAssignments UNION ALL
+    SELECT 'Comments', COUNT(*) FROM Comments UNION ALL
+    SELECT 'ApplicationLogins', COUNT(*) FROM ApplicationLogins UNION ALL
+    SELECT 'BusinessUnitBudgets', COUNT(*) FROM BusinessUnitBudgets UNION ALL
+    SELECT 'BusinessUnitExpenses', COUNT(*) FROM BusinessUnitExpenses UNION ALL
+    SELECT 'EmployeeSalaries', COUNT(*) FROM EmployeeSalaries UNION ALL
+    SELECT 'PayrollTransactions', COUNT(*) FROM PayrollTransactions UNION ALL
+    SELECT 'Releases', COUNT(*) FROM Releases
+);

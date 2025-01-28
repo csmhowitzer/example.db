@@ -1,0 +1,467 @@
+-- Create all of the tables
+
+-- Purpose:
+-- - Stores details of software applications used or developed within the company.
+-- - Provides a structured way to associate projects with specific applications.
+
+DROP TABLE IF EXISTS Applications;
+
+CREATE TABLE Applications (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Application name
+    Description TEXT, -- Optional details about the application
+    CreatedDate TEXT NOT NULL -- Timestamp when the application was added
+);
+
+-- Purpose:
+-- - Establishes a many-to-many relationship between Applications and Projects.
+-- - Allows multiple projects to belong to multiple applications.
+
+DROP TABLE IF EXISTS ApplicationProjects;
+
+CREATE TABLE ApplicationProjects (
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    ProjectId INTEGER NOT NULL, -- Links to Projects table
+    CreatedDate TEXT NOT NULL, -- Timestamp when the association was created
+    PRIMARY KEY (ApplicationId, ProjectId), -- Prevents duplicate associations
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ProjectId) REFERENCES Projects(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Links applications to multiple environments (e.g., an app can exist in Dev, Staging, and Production).
+-- - Tracks deployment history, including versioning and deployment dates.
+
+DROP TABLE IF EXISTS ApplicationEnvironments;
+
+CREATE TABLE ApplicationEnvironments (
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    EnvironmentId INTEGER NOT NULL, -- Links to Environments table
+    URL TEXT, -- Optional application URL for the given environment
+    LastDeployedVersion TEXT, -- Version last deployed in this environment
+    LastDeployedDate TEXT, -- Timestamp of the last deployment
+    CreatedDate TEXT NOT NULL, -- When this relationship entry was created
+    PRIMARY KEY (ApplicationId, EnvironmentId), -- Ensures unique Application-Environment pair
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    FOREIGN KEY (EnvironmentId) REFERENCES Environments(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Stores the list of available environments where applications can be deployed.
+-- - Ensures consistency in environment names across applications.
+
+DROP TABLE IF EXISTS Environments;
+
+CREATE TABLE Environments (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Environment name (e.g., Development, Staging, Production)
+    Description TEXT, -- Optional description of the environment
+    CreatedDate TEXT NOT NULL -- Timestamp when the environment was added
+);
+
+-- Purpose:
+-- - Stores details of software applications used or developed within the company.
+-- - Provides a structured way to associate projects with specific applications.
+
+DROP TABLE IF EXISTS Applications;
+
+CREATE TABLE Applications (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Application name
+    Description TEXT, -- Optional details about the application
+    CreatedDate TEXT NOT NULL -- Timestamp when the application was added
+);
+
+-- Purpose:
+-- - Establishes a many-to-many relationship between Applications and Projects.
+-- - Allows multiple projects to belong to multiple applications.
+
+DROP TABLE IF EXISTS ApplicationProjects;
+
+CREATE TABLE ApplicationProjects (
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    ProjectId INTEGER NOT NULL, -- Links to Projects table
+    CreatedDate TEXT NOT NULL, -- Timestamp when the association was created
+    PRIMARY KEY (ApplicationId, ProjectId), -- Prevents duplicate associations
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ProjectId) REFERENCES Projects(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Links applications to multiple environments (e.g., an app can exist in Dev, Staging, and Production).
+-- - Tracks deployment history, including versioning and deployment dates.
+
+DROP TABLE IF EXISTS ApplicationEnvironments;
+
+CREATE TABLE ApplicationEnvironments (
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    EnvironmentId INTEGER NOT NULL, -- Links to Environments table
+    URL TEXT, -- Optional application URL for the given environment
+    LastDeployedVersion TEXT, -- Version last deployed in this environment
+    LastDeployedDate TEXT, -- Timestamp of the last deployment
+    CreatedDate TEXT NOT NULL, -- When this relationship entry was created
+    PRIMARY KEY (ApplicationId, EnvironmentId), -- Ensures unique Application-Environment pair
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    FOREIGN KEY (EnvironmentId) REFERENCES Environments(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Stores the list of available environments where applications can be deployed.
+-- - Ensures consistency in environment names across applications.
+
+DROP TABLE IF EXISTS Environments;
+
+CREATE TABLE Environments (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Environment name (e.g., Development, Staging, Production)
+    Description TEXT, -- Optional description of the environment
+    CreatedDate TEXT NOT NULL -- Timestamp when the environment was added
+);
+
+-- Purpose:
+-- - Stores personal and contact information of company employees.
+-- - Used as a central entity for linking employees to departments, roles, and payroll.
+
+DROP TABLE IF EXISTS Employees;
+
+CREATE TABLE Employees (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    FName TEXT NOT NULL, -- Employee's first name
+    LName TEXT NOT NULL, -- Employee's last name
+    Email TEXT NULL UNIQUE, -- Unique email for company communications
+    CreatedDate TEXT NOT NULL, -- Timestamp when the employee record was created
+    ModifiedDate TEXT NOT NULL -- Timestamp when the record was last modified
+);
+
+-- Purpose:
+-- - Defines various roles within the company (e.g., Developer, QA, Manager).
+-- - Used for assigning permissions and structuring employee responsibilities.
+
+DROP TABLE IF EXISTS Roles;
+
+CREATE TABLE Roles (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL, -- Role name (e.g., "Software Engineer", "HR Manager")
+    Desc TEXT NULL, -- Optional description of the role
+    CreatedDate TEXT NOT NULL, -- Timestamp when this role was created
+    ModifiedDate TEXT NOT NULL -- Timestamp when this role was last updated
+);
+
+-- Purpose:
+-- - Links employees to their roles (many-to-many relationship).
+-- - Allows employees to hold multiple roles within the company.
+-- - Ensures flexibility for role assignments without modifying the Employees table.
+
+DROP TABLE IF EXISTS EmployeeRoles;
+
+CREATE TABLE EmployeeRoles (
+    EmployeeId INTEGER NOT NULL, -- Links to Employees table
+    RoleId INTEGER NOT NULL, -- Links to Roles table
+    CreatedDate TEXT NOT NULL, -- Timestamp when the role assignment was made
+    PRIMARY KEY (EmployeeId, RoleId), -- Prevents duplicate role assignments
+    FOREIGN KEY (EmployeeId)
+        REFERENCES Employees (ID)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+    FOREIGN KEY (RoleId)
+        REFERENCES Roles (ID)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
+);
+
+-- Purpose:
+-- - Stores personal and contact information of company employees.
+-- - Used as a central entity for linking employees to departments, roles, and payroll.
+
+DROP TABLE IF EXISTS Employees;
+
+CREATE TABLE Employees (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    FName TEXT NOT NULL, -- Employee's first name
+    LName TEXT NOT NULL, -- Employee's last name
+    Email TEXT NULL UNIQUE, -- Unique email for company communications
+    CreatedDate TEXT NOT NULL, -- Timestamp when the employee record was created
+    ModifiedDate TEXT NOT NULL -- Timestamp when the record was last modified
+);
+
+-- Purpose:
+-- - Defines various roles within the company (e.g., Developer, QA, Manager).
+-- - Used for assigning permissions and structuring employee responsibilities.
+
+DROP TABLE IF EXISTS Roles;
+
+CREATE TABLE Roles (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL, -- Role name (e.g., "Software Engineer", "HR Manager")
+    Desc TEXT NULL, -- Optional description of the role
+    CreatedDate TEXT NOT NULL, -- Timestamp when this role was created
+    ModifiedDate TEXT NOT NULL -- Timestamp when this role was last updated
+);
+
+-- Purpose:
+-- - Links employees to their roles (many-to-many relationship).
+-- - Allows employees to hold multiple roles within the company.
+-- - Ensures flexibility for role assignments without modifying the Employees table.
+
+DROP TABLE IF EXISTS EmployeeRoles;
+
+CREATE TABLE EmployeeRoles (
+    EmployeeId INTEGER NOT NULL, -- Links to Employees table
+    RoleId INTEGER NOT NULL, -- Links to Roles table
+    CreatedDate TEXT NOT NULL, -- Timestamp when the role assignment was made
+    PRIMARY KEY (EmployeeId, RoleId), -- Prevents duplicate role assignments
+    FOREIGN KEY (EmployeeId)
+        REFERENCES Employees (ID)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+    FOREIGN KEY (RoleId)
+        REFERENCES Roles (ID)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
+);
+
+-- Purpose:
+-- - Stores predefined statuses for feature requests.
+-- - Standardizes request lifecycle tracking across applications.
+
+DROP TABLE IF EXISTS FeatureRequestStatus;
+
+CREATE TABLE FeatureRequestStatus (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Status name (e.g., "Proposed", "Approved", "In Progress", "Completed", "Rejected")
+    Description TEXT, -- Optional explanation of the status
+    CreatedDate TEXT NOT NULL -- Timestamp when the status was added
+);
+
+-- Purpose:
+-- - Stores requests for new features or changes in applications.
+-- - Supports internal (employees, managers) and external (customers) requesters.
+-- - Tracks which application each request is associated with.
+
+DROP TABLE IF EXISTS FeatureRequests;
+
+CREATE TABLE FeatureRequests (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    RequesterId INTEGER NOT NULL, -- Links to Requesters table (Employees, Customers, etc.)
+    Title TEXT NOT NULL, -- Feature request title
+    Description TEXT, -- Detailed request description
+    CreatedDate TEXT NOT NULL, -- Timestamp when the request was submitted
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    FOREIGN KEY (RequesterId) REFERENCES Requesters(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Tracks status changes for feature requests over time.
+-- - Provides historical records of feature request progress.
+
+DROP TABLE IF EXISTS FeatureRequestStatusHistory;
+
+CREATE TABLE FeatureRequestStatusHistory (
+    FeatureRequestId INTEGER NOT NULL, -- Links to FeatureRequests table
+    StatusId INTEGER NOT NULL, -- Links to FeatureRequestStatus table
+    ChangedBy INTEGER NOT NULL, -- Employee who changed the status
+    ChangedDate TEXT NOT NULL, -- Timestamp when the status was updated
+    Notes TEXT, -- Optional notes on the status change
+    PRIMARY KEY (FeatureRequestId, StatusId, ChangedDate), -- Ensures unique status change records
+    FOREIGN KEY (FeatureRequestId) REFERENCES FeatureRequests(ID) ON DELETE CASCADE,
+    FOREIGN KEY (StatusId) REFERENCES FeatureRequestStatus(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ChangedBy) REFERENCES Employees(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Stores details of individuals requesting new features.
+-- - Supports both internal (Employees, Managers) and external (Customers, Others).
+
+DROP TABLE IF EXISTS Requesters;
+
+CREATE TABLE Requesters (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL, -- Requester’s full name
+    Email TEXT NULL UNIQUE, -- Optional email for communication
+    CreatedDate TEXT NOT NULL -- Timestamp when the requester was added
+);
+
+-- Purpose:
+-- - Stores predefined categories for feature requesters.
+-- - Allows flexibility in defining requester roles.
+
+DROP TABLE IF EXISTS FeatureRequestTypes;
+
+CREATE TABLE FeatureRequestTypes (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Type of requester (e.g., "Employee", "Customer", "Manager", "Other")
+    Description TEXT, -- Optional description of the requester type
+    CreatedDate TEXT NOT NULL -- Timestamp when this requester type was added
+);
+
+-- Purpose:
+-- - Stores authentication credentials and tracking per employee for different applications.
+-- - Supports multi-application authentication by linking logins to specific applications.
+-- - Tracks login attempts, timeouts, and last login activity.
+
+DROP TABLE IF EXISTS ApplicationLogins;
+
+CREATE TABLE ApplicationLogins (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT, -- Unique identifier for login records
+    EmployeeId INTEGER NOT NULL, -- Links to Employees table
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    Password_Hash TEXT NOT NULL, -- Hashed password for secure authentication
+    LoginRetryCnt INTEGER DEFAULT 0, -- Number of failed login attempts
+    TimeoutDate TEXT NULL, -- Timestamp when the account is temporarily locked (if applicable)
+    LastLoginDate TEXT NULL, -- Timestamp of the last successful login
+    CreatedDate TEXT NOT NULL, -- Timestamp when the login record was created
+    FOREIGN KEY (EmployeeId) REFERENCES Employees(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    UNIQUE (EmployeeId, ApplicationId) -- Ensures one login record per employee per application
+);
+
+-- Purpose:
+-- - Tracks software releases within projects and applications.
+-- - Allows for organized release management and version control.
+
+DROP TABLE IF EXISTS Releases;
+
+CREATE TABLE Releases (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    ProjectId INTEGER NOT NULL, -- Links to Projects table
+    Version TEXT NOT NULL, -- Release version
+    ReleaseDate TEXT NOT NULL, -- When the release was deployed
+    ReleaseNotes TEXT, -- Optional notes about the release
+    CreatedDate TEXT NOT NULL, -- Timestamp when the release was recorded
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ProjectId) REFERENCES Projects(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Stores project details, including name, description, start/end dates.
+-- - Tracks ownership by linking projects to employees.
+-- - Used for organizing tasks and assignments within a project.
+
+DROP TABLE IF EXISTS Projects;
+
+CREATE TABLE Projects (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL, -- Project name
+    Description TEXT, -- Project details
+    StartDate TEXT, -- When the project starts
+    EndDate TEXT, -- When the project ends
+    OwnerId INTEGER NOT NULL, -- The employee responsible for the project
+    FOREIGN KEY (OwnerId) REFERENCES Employees(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Defines different statuses for tasks (e.g., "To Do", "In Progress", "Completed").
+-- - Ensures consistency when tracking task progress.
+
+DROP TABLE IF EXISTS TaskStatus;
+
+CREATE TABLE TaskStatus (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE -- Status name (e.g., "To Do", "Blocked", "Done")
+);
+
+-- Purpose:
+-- - Defines priority levels for tasks (e.g., High, Medium, Low).
+-- - Ensures tasks are categorized based on urgency.
+
+DROP TABLE IF EXISTS Priorities;
+
+CREATE TABLE Priorities (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Priority label (e.g., "High", "Medium", "Low")
+    Level INTEGER NOT NULL -- Numeric priority level (1 = High, 2 = Medium, etc.)
+);
+
+-- Purpose:
+-- - Stores task details, including name, description, and deadlines.
+-- - Links tasks to projects, statuses, and priorities.
+-- - Allows for tracking task progress and assignments.
+
+DROP TABLE IF EXISTS Tasks;
+
+CREATE TABLE Tasks (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    TaskName TEXT NOT NULL UNIQUE, -- Task title or name
+    Description TEXT, -- Task details
+    StartDate TEXT, -- When the task starts
+    DueDate TEXT, -- When the task is due
+    ProjectId INTEGER NOT NULL, -- Links task to a project
+    StatusId INTEGER NOT NULL, -- Links task to a status
+    Estimate INTEGER, -- Estimated effort (e.g., hours, days)
+    PriorityId INTEGER NOT NULL, -- Links task to a priority level
+    CreatedDate TEXT NOT NULL, -- When this task was created
+    ModifiedDate TEXT NOT NULL, -- Last updated timestamp
+    FOREIGN KEY (ProjectId) REFERENCES Projects(ID) ON DELETE CASCADE,
+    FOREIGN KEY (StatusId) REFERENCES TaskStatus(ID) ON DELETE CASCADE,
+    FOREIGN KEY (PriorityId) REFERENCES Priorities(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Assigns employees to tasks (many-to-many relationship).
+-- - Allows tracking of who is responsible for each task.
+-- - Supports multiple employees per task.
+
+DROP TABLE IF EXISTS TaskAssignments;
+
+CREATE TABLE TaskAssignments (
+    TaskId INTEGER NOT NULL, -- Links to Tasks table
+    EmployeeId INTEGER NOT NULL, -- Links to Employees table
+    AssignedDate TEXT NOT NULL, -- When the task was assigned
+    PRIMARY KEY (TaskId, EmployeeId), -- Ensures unique task-employee pair
+    FOREIGN KEY (TaskId) REFERENCES Tasks(ID) ON DELETE CASCADE,
+    FOREIGN KEY (EmployeeId) REFERENCES Employees(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Allows employees to leave comments on tasks.
+-- - Supports collaboration and task updates.
+-- - Tracks comment timestamps for accountability.
+
+DROP TABLE IF EXISTS Comments;
+
+CREATE TABLE Comments (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    TaskId INTEGER NOT NULL, -- Links to Tasks table
+    EmployeeId INTEGER NOT NULL, -- Links to Employees table
+    Comment TEXT NOT NULL, -- Text of the comment
+    CommentDate TEXT NOT NULL, -- Timestamp of when the comment was made
+    FOREIGN KEY (TaskId) REFERENCES Tasks(ID) ON DELETE CASCADE,
+    FOREIGN KEY (EmployeeId) REFERENCES Employees(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Stores team names and creation timestamps.
+-- - Organizes employees into logical work groups (e.g., development teams, QA teams).
+-- - Provides a structure for tracking team-based assignments.
+
+DROP TABLE IF EXISTS Teams;
+
+CREATE TABLE Teams (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Unique team name
+    CreatedDate TEXT NOT NULL -- Timestamp when the team was created
+);
+
+-- Purpose:
+-- - Links employees to teams (many-to-many relationship).
+-- - Allows employees to belong to multiple teams.
+-- - Supports team-based assignments and collaboration.
+
+DROP TABLE IF EXISTS TeamMembers;
+
+CREATE TABLE TeamMembers (
+    EmployeeId INTEGER NOT NULL, -- Links to Employees table
+    TeamId INTEGER NOT NULL, -- Links to Teams table
+    CreatedDate TEXT NOT NULL, -- Timestamp when the employee joined the team
+    PRIMARY KEY (EmployeeId, TeamId), -- Ensures unique employee-team pairing
+    FOREIGN KEY (EmployeeId) 
+        REFERENCES Employees (ID)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+    FOREIGN KEY (TeamId) 
+        REFERENCES Teams (ID)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
+);
