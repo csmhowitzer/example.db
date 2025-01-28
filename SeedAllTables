@@ -1,0 +1,836 @@
+-- Insert Business Units
+INSERT INTO BusinessUnits (Name, Description, CreatedDate) VALUES
+    ('Technology & Product', 'Handles Engineering, QA, and Project Management', datetime('now')),
+    ('Sales & Marketing', 'Handles Sales and Marketing', datetime('now')),
+    ('Operations & HR', 'Handles Human Resources, Finance, and Support');
+
+-- Insert Departments
+INSERT INTO Departments (Name, CreatedDate) VALUES
+    ('Technology', datetime('now')),
+    ('Quality Assurance', datetime('now')),
+    ('Project Management', datetime('now')),
+    ('Sales', datetime('now')),
+    ('Marketing', datetime('now')),
+    ('Human Resources', datetime('now')),
+    ('Finance', datetime('now')),
+    ('Support', datetime('now'));
+
+-- Link Departments to Business Units
+INSERT INTO DepartmentBusinessUnit (DepartmentId, BusinessUnitId, CreatedDate) 
+VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Quality Assurance'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Project Management'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Sales'), (SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Marketing'), (SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Human Resources'), (SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Finance'), (SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Support'), (SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), datetime('now'));
+
+-- Insert HR Roles
+INSERT INTO Roles (Name, Desc, CreatedDate, ModifiedDate) VALUES
+    ('HR Manager', 'Oversees human resources operations', datetime('now'), datetime('now')),
+    ('Recruiter', 'Handles hiring and onboarding processes', datetime('now'), datetime('now'));
+
+-- Insert HR Employees
+INSERT INTO Employees (FName, LName, Email, CreatedDate, ModifiedDate) VALUES
+    ('Holly', 'Resource', 'holly.resource@example.com', datetime('now'), datetime('now')), -- HR Manager
+    ('Reed', 'Resume', 'reed.resume@example.com', datetime('now'), datetime('now'));       -- Recruiter
+
+-- Assign HR Employees to the HR Department
+INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Human Resources'), (SELECT ID FROM Employees WHERE FName = 'Sarah'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Human Resources'), (SELECT ID FROM Employees WHERE FName = 'David'), datetime('now'));
+
+-- Assign HR Employees to Roles
+INSERT INTO EmployeeRoles (EmployeeId, RoleId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Holly'), (SELECT ID FROM Roles WHERE Name = 'HR Manager'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Reed'), (SELECT ID FROM Roles WHERE Name = 'Recruiter'), datetime('now'));
+
+-- Insert Sales Roles
+INSERT INTO Roles (Name, Desc, CreatedDate, ModifiedDate) VALUES
+    ('Sales Manager', 'Leads the sales team and manages client relations', datetime('now'), datetime('now')),
+    ('Sales Representative', 'Handles client outreach and sales', datetime('now'), datetime('now'));
+
+-- Insert Sales Employees
+INSERT INTO Employees (FName, LName, Email, CreatedDate, ModifiedDate) VALUES
+    ('Sally', 'Sale', 'sally.sale@example.com', datetime('now'), datetime('now')),
+    ('Tommy', 'Target', 'tommy.target@example.com', datetime('now'), datetime('now')),
+    ('Bobby', 'Quota', 'bobby.quota@example.com', datetime('now'), datetime('now'));
+
+-- Assign Sales Employees to the Sales Department
+INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Sales'), (SELECT ID FROM Employees WHERE FName = 'Sally'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Sales'), (SELECT ID FROM Employees WHERE FName = 'Tommy'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Sales'), (SELECT ID FROM Employees WHERE FName = 'Bobby'), datetime('now'));
+
+-- Assign Sales Employees to Roles
+INSERT INTO EmployeeRoles (EmployeeId, RoleId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Sally'), (SELECT ID FROM Roles WHERE Name = 'Sales Manager'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Tommy'), (SELECT ID FROM Roles WHERE Name = 'Sales Representative'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Bobby'), (SELECT ID FROM Roles WHERE Name = 'Sales Representative'), datetime('now'));
+
+-- Insert Marketing Roles
+INSERT INTO Roles (Name, Desc, CreatedDate, ModifiedDate) VALUES
+    ('Marketing Manager', 'Oversees marketing strategies and campaigns', datetime('now'), datetime('now')),
+    ('Marketing Specialist', 'Executes marketing campaigns and strategies', datetime('now'), datetime('now'));
+
+-- Insert Marketing Employees
+INSERT INTO Employees (FName, LName, Email, CreatedDate, ModifiedDate) VALUES
+    ('Marky', 'Marketer', 'marky.marketer@example.com', datetime('now'), datetime('now')),
+    ('Adrian', 'Adspace', 'adrian.adspace@example.com', datetime('now'), datetime('now')),
+    ('Brandy', 'Brand', 'brandy.brand@example.com', datetime('now'), datetime('now'));
+
+-- Assign Marketing Employees to the Marketing Department
+INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Marketing'), (SELECT ID FROM Employees WHERE FName = 'Marky'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Marketing'), (SELECT ID FROM Employees WHERE FName = 'Adrian'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Marketing'), (SELECT ID FROM Employees WHERE FName = 'Brandy'), datetime('now'));
+
+-- Assign Marketing Employees to Roles
+INSERT INTO EmployeeRoles (EmployeeId, RoleId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Marky'), (SELECT ID FROM Roles WHERE Name = 'Marketing Manager'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Adrian'), (SELECT ID FROM Roles WHERE Name = 'Marketing Specialist'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Brandy'), (SELECT ID FROM Roles WHERE Name = 'Marketing Specialist'), datetime('now'));
+
+-- Insert Finance Roles
+INSERT INTO Roles (Name, Desc, CreatedDate, ModifiedDate) VALUES
+    ('CFO', 'Oversees company financial strategy and operations', datetime('now'), datetime('now')),
+    ('Accountant', 'Manages financial records, transactions, and compliance', datetime('now'), datetime('now'));
+
+-- Insert Finance Employees
+INSERT INTO Employees (FName, LName, Email, CreatedDate, ModifiedDate) VALUES
+    ('Penny', 'Cashflow', 'penny.cashflow@example.com', datetime('now'), datetime('now')),
+    ('Duke', 'Ledger', 'duke.ledger@example.com', datetime('now'), datetime('now'));
+
+-- Assign Finance Employees to the Finance Department
+INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Finance'), (SELECT ID FROM Employees WHERE FName = 'Penny'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Finance'), (SELECT ID FROM Employees WHERE FName = 'Duke'), datetime('now'));
+
+-- Assign Finance Employees to Roles
+INSERT INTO EmployeeRoles (EmployeeId, RoleId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Penny'), (SELECT ID FROM Roles WHERE Name = 'CFO'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Duke'), (SELECT ID FROM Roles WHERE Name = 'Accountant'), datetime('now'));
+
+-- Insert Support Roles
+INSERT INTO Roles (Name, Desc, CreatedDate, ModifiedDate) VALUES
+    ('Support Manager', 'Oversees customer support operations and team performance', datetime('now'), datetime('now')),
+    ('Support Representative', 'Handles customer inquiries and technical support', datetime('now'), datetime('now'));
+
+-- Insert Support Employees
+INSERT INTO Employees (FName, LName, Email, CreatedDate, ModifiedDate) VALUES
+    ('Rick', 'Resolve', 'rick.resolve@example.com', datetime('now'), datetime('now')),
+    ('Callie', 'Ticket', 'callie.ticket@example.com', datetime('now'), datetime('now')),
+    ('Nina', 'Helpdesk', 'nina.helpdesk@example.com', datetime('now'), datetime('now')),
+    ('Oscar', 'Outage', 'oscar.outage@example.com', datetime('now'), datetime('now'));
+
+-- Assign Support Employees to the Support Department
+INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Support'), (SELECT ID FROM Employees WHERE FName = 'Rick'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Support'), (SELECT ID FROM Employees WHERE FName = 'Callie'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Support'), (SELECT ID FROM Employees WHERE FName = 'Nina'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Support'), (SELECT ID FROM Employees WHERE FName = 'Oscar'), datetime('now'));
+
+-- Assign Support Employees to Roles
+INSERT INTO EmployeeRoles (EmployeeId, RoleId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Rick'), (SELECT ID FROM Roles WHERE Name = 'Support Manager'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Callie'), (SELECT ID FROM Roles WHERE Name = 'Support Representative'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Nina'), (SELECT ID FROM Roles WHERE Name = 'Support Representative'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Oscar'), (SELECT ID FROM Roles WHERE Name = 'Support Representative'), datetime('now'));
+
+-- Insert Project Management Roles
+INSERT INTO Roles (Name, Desc, CreatedDate, ModifiedDate) VALUES
+    ('Project Manager', 'Oversees project timelines and deliverables', datetime('now'), datetime('now')),
+    ('Product Owner', 'Defines product requirements and prioritizes features', datetime('now'), datetime('now')),
+    ('Business Analyst', 'Analyzes business needs and documents requirements', datetime('now'), datetime('now'));
+
+-- Insert Project Management Employees
+INSERT INTO Employees (FName, LName, Email, CreatedDate, ModifiedDate) VALUES
+    ('Paula', 'Planner', 'paula.planner@example.com', datetime('now'), datetime('now')),
+    ('Omar', 'Owner', 'omar.owner@example.com', datetime('now'), datetime('now')),
+    ('Betty', 'Blueprint', 'betty.blueprint@example.com', datetime('now'), datetime('now')),
+    ('Brian', 'Breakdown', 'brian.breakdown@example.com', datetime('now'), datetime('now')),
+    ('Barbara', 'Backlog', 'barbara.backlog@example.com', datetime('now'), datetime('now'));
+
+-- Assign Project Management Employees to the Project Management Department
+INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Project Management'), (SELECT ID FROM Employees WHERE FName = 'Paula'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Project Management'), (SELECT ID FROM Employees WHERE FName = 'Omar'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Project Management'), (SELECT ID FROM Employees WHERE FName = 'Betty'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Project Management'), (SELECT ID FROM Employees WHERE FName = 'Brian'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Project Management'), (SELECT ID FROM Employees WHERE FName = 'Barbara'), datetime('now'));
+
+-- Assign Project Management Employees to Roles
+INSERT INTO EmployeeRoles (EmployeeId, RoleId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Paula'), (SELECT ID FROM Roles WHERE Name = 'Project Manager'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Omar'), (SELECT ID FROM Roles WHERE Name = 'Product Owner'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Betty'), (SELECT ID FROM Roles WHERE Name = 'Business Analyst'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Brian'), (SELECT ID FROM Roles WHERE Name = 'Business Analyst'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Barbara'), (SELECT ID FROM Roles WHERE Name = 'Business Analyst'), datetime('now'));
+
+-- Insert Operations Roles
+INSERT INTO Roles (Name, Desc, CreatedDate, ModifiedDate) VALUES
+    ('COO', 'Oversees company operations and efficiency', datetime('now'), datetime('now')),
+    ('Database Administrator', 'Manages and maintains database infrastructure', datetime('now'), datetime('now'));
+
+-- Insert Operations Employees
+INSERT INTO Employees (FName, LName, Email, CreatedDate, ModifiedDate) VALUES
+    ('Olivia', 'Optimize', 'olivia.optimize@example.com', datetime('now'), datetime('now')),
+    ('Doug', 'Databases', 'doug.databases@example.com', datetime('now'), datetime('now')),
+    ('Sam', 'Schema', 'sam.schema@example.com', datetime('now'), datetime('now'));
+
+-- Assign Operations Employees to the Operations Department
+INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Operations'), (SELECT ID FROM Employees WHERE FName = 'Olivia'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Operations'), (SELECT ID FROM Employees WHERE FName = 'Doug'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Operations'), (SELECT ID FROM Employees WHERE FName = 'Sam'), datetime('now'));
+
+-- Assign COO to Additional Departments (Project Management & Support)
+INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Project Management'), (SELECT ID FROM Employees WHERE FName = 'Olivia'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Support'), (SELECT ID FROM Employees WHERE FName = 'Olivia'), datetime('now'));
+
+-- Assign Operations Employees to Roles
+INSERT INTO EmployeeRoles (EmployeeId, RoleId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Olivia'), (SELECT ID FROM Roles WHERE Name = 'COO'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Doug'), (SELECT ID FROM Roles WHERE Name = 'Database Administrator'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Sam'), (SELECT ID FROM Roles WHERE Name = 'Database Administrator'), datetime('now'));
+
+-- Insert QA Roles
+INSERT INTO Roles (Name, Desc, CreatedDate, ModifiedDate) VALUES
+    ('QA Manager', 'Oversees the QA team and ensures software quality', datetime('now'), datetime('now')),
+    ('QA Engineer', 'Tests and validates software functionality and performance', datetime('now'), datetime('now'));
+
+-- Insert QA Employees
+INSERT INTO Employees (FName, LName, Email, CreatedDate, ModifiedDate) VALUES
+    ('Quincy', 'Assurance', 'quincy.assurance@example.com', datetime('now'), datetime('now')),
+    ('Tess', 'Testcase', 'tess.testcase@example.com', datetime('now'), datetime('now')),
+    ('Bugs', 'Finder', 'bugs.finder@example.com', datetime('now'), datetime('now')),
+    ('Casey', 'Edgecase', 'casey.edgecase@example.com', datetime('now'), datetime('now')),
+    ('Sasha', 'Script', 'sasha.script@example.com', datetime('now'), datetime('now')),
+    ('Debbie', 'Debugger', 'debbie.debugger@example.com', datetime('now'), datetime('now'));
+
+-- Assign QA Employees to the QA Department
+INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Quality Assurance'), (SELECT ID FROM Employees WHERE FName = 'Quincy'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Quality Assurance'), (SELECT ID FROM Employees WHERE FName = 'Tess'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Quality Assurance'), (SELECT ID FROM Employees WHERE FName = 'Bugs'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Quality Assurance'), (SELECT ID FROM Employees WHERE FName = 'Casey'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Quality Assurance'), (SELECT ID FROM Employees WHERE FName = 'Sasha'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Quality Assurance'), (SELECT ID FROM Employees WHERE FName = 'Debbie'), datetime('now'));
+
+-- Assign QA Employees to Roles
+INSERT INTO EmployeeRoles (EmployeeId, RoleId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Quincy'), (SELECT ID FROM Roles WHERE Name = 'QA Manager'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Tess'), (SELECT ID FROM Roles WHERE Name = 'QA Engineer'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Bugs'), (SELECT ID FROM Roles WHERE Name = 'QA Engineer'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Casey'), (SELECT ID FROM Roles WHERE Name = 'QA Engineer'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Sasha'), (SELECT ID FROM Roles WHERE Name = 'QA Engineer'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Debbie'), (SELECT ID FROM Roles WHERE Name = 'QA Engineer'), datetime('now'));
+
+-- Create a QA-Specific Team
+INSERT INTO Teams (Name, CreatedDate) VALUES
+    ('Bug Hunters', datetime('now'));
+
+-- Assign QA Employees to the QA Team
+INSERT INTO TeamMembers (EmployeeId, TeamId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Quincy'), (SELECT ID FROM Teams WHERE Name = 'Bug Hunters'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Tess'), (SELECT ID FROM Teams WHERE Name = 'Bug Hunters'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Bugs'), (SELECT ID FROM Teams WHERE Name = 'Bug Hunters'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Casey'), (SELECT ID FROM Teams WHERE Name = 'Bug Hunters'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Sasha'), (SELECT ID FROM Teams WHERE Name = 'Bug Hunters'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Debbie'), (SELECT ID FROM Teams WHERE Name = 'Bug Hunters'), datetime('now'));
+
+-- Insert Development Roles
+INSERT INTO Roles (Name, Desc, CreatedDate, ModifiedDate) VALUES
+    ('CTO', 'Oversees all technical operations and strategy', datetime('now'), datetime('now')),
+    ('Development Director', 'Leads development teams and also oversees QA', datetime('now'), datetime('now')),
+    ('Development Manager', 'Manages development teams and projects', datetime('now'), datetime('now')),
+    ('Team Lead', 'Leads a development team and ensures code quality', datetime('now'), datetime('now')),
+    ('Software Engineer', 'Develops software solutions and applications', datetime('now'), datetime('now')),
+    ('QA Developer', 'Focuses on test automation and code quality', datetime('now'), datetime('now'));
+
+-- Insert Development Employees
+INSERT INTO Employees (FName, LName, Email, CreatedDate, ModifiedDate) VALUES
+    ('Theo', 'Techie', 'theo.techie@example.com', datetime('now'), datetime('now')), -- CTO
+    ('Dan', 'Devlead', 'dan.devlead@example.com', datetime('now'), datetime('now')), -- Development Director
+    ('Morgan', 'Manager', 'morgan.manager@example.com', datetime('now'), datetime('now')), -- Dev Manager
+
+    ('Leo', 'Lambda', 'leo.lambda@example.com', datetime('now'), datetime('now')), -- Team 1 Lead
+    ('Sandy', 'Script', 'sandy.script@example.com', datetime('now'), datetime('now')), -- Team 1 QA Dev
+    ('Randy', 'Recursive', 'randy.recursive@example.com', datetime('now'), datetime('now')),
+    ('Charlie', 'Codely', 'charlie.codely@example.com', datetime('now'), datetime('now')),
+    ('Nancy', 'Null', 'nancy.null@example.com', datetime('now'), datetime('now')),
+
+    ('Terry', 'Typo', 'terry.typo@example.com', datetime('now'), datetime('now')), -- Team 2 Lead
+    ('Amy', 'Assert', 'amy.assert@example.com', datetime('now'), datetime('now')), -- Team 2 QA Dev
+    ('Felix', 'Function', 'felix.function@example.com', datetime('now'), datetime('now')),
+    ('Olly', 'Overflow', 'olly.overflow@example.com', datetime('now'), datetime('now')),
+    ('Vera', 'Variable', 'vera.variable@example.com', datetime('now'), datetime('now')),
+
+    ('Greg', 'Git', 'greg.git@example.com', datetime('now'), datetime('now')), -- Team 3 Lead
+    ('Kim', 'Kernel', 'kim.kernel@example.com', datetime('now'), datetime('now')), -- Team 3 QA Dev
+    ('Nina', 'Nesting', 'nina.nesting@example.com', datetime('now'), datetime('now')),
+    ('Benny', 'Bitwise', 'benny.bitwise@example.com', datetime('now'), datetime('now')),
+    ('Pat', 'Pipeline', 'pat.pipeline@example.com', datetime('now'), datetime('now')),
+
+    ('Zack', 'Zero', 'zack.zero@example.com', datetime('now'), datetime('now')), -- Team 4 Lead
+    ('Uma', 'UnitTest', 'uma.unittest@example.com', datetime('now'), datetime('now')), -- Team 4 QA Dev
+    ('Oscar', 'Operator', 'oscar.operator@example.com', datetime('now'), datetime('now')),
+    ('Jenny', 'Jupyter', 'jenny.jupyter@example.com', datetime('now'), datetime('now')),
+    ('Eli', 'Exception', 'eli.exception@example.com', datetime('now'), datetime('now'));
+
+-- Assign Development Employees to the Development Department
+INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Theo'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Dan'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Morgan'), datetime('now')),
+
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Leo'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Sandy'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Randy'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Charlie'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Nancy'), datetime('now')),
+
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Terry'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Amy'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Felix'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Olly'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Vera'), datetime('now')),
+
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Greg'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Kim'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Nina'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Benny'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Pat'), datetime('now')),
+
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Zack'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Uma'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Oscar'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Jenny'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Eli'), datetime('now'));
+
+-- Assign Development Director to QA as well
+INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Departments WHERE Name = 'Quality Assurance'), (SELECT ID FROM Employees WHERE FName = 'Dan'), datetime('now'));
+
+-- Create Development Teams
+INSERT INTO Teams (Name, CreatedDate) VALUES
+    ('Null Pointers', datetime('now')),
+    ('Syntax Errors', datetime('now')),
+    ('Merge Conflicts', datetime('now')),
+    ('Runtime Terrors', datetime('now'));
+
+-- Assign Development Employees to Teams
+-- (Following the predefined teams from earlier)
+-- Each team consists of 1 Lead, 1 QA Dev, and 3 Software Engineers
+
+-- Assign Team Members for "Null Pointers"
+INSERT INTO TeamMembers (EmployeeId, TeamId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Leo'), (SELECT ID FROM Teams WHERE Name = 'Null Pointers'), datetime('now')),  -- Lead
+    ((SELECT ID FROM Employees WHERE FName = 'Sandy'), (SELECT ID FROM Teams WHERE Name = 'Null Pointers'), datetime('now')),  -- QA Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Randy'), (SELECT ID FROM Teams WHERE Name = 'Null Pointers'), datetime('now')),  -- Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Charlie'), (SELECT ID FROM Teams WHERE Name = 'Null Pointers'), datetime('now')),  -- Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Nancy'), (SELECT ID FROM Teams WHERE Name = 'Null Pointers'), datetime('now'));  -- Dev
+
+-- Assign Team Members for "Syntax Errors"
+INSERT INTO TeamMembers (EmployeeId, TeamId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Terry'), (SELECT ID FROM Teams WHERE Name = 'Syntax Errors'), datetime('now')),  -- Lead
+    ((SELECT ID FROM Employees WHERE FName = 'Amy'), (SELECT ID FROM Teams WHERE Name = 'Syntax Errors'), datetime('now')),  -- QA Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Felix'), (SELECT ID FROM Teams WHERE Name = 'Syntax Errors'), datetime('now')),  -- Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Olly'), (SELECT ID FROM Teams WHERE Name = 'Syntax Errors'), datetime('now')),  -- Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Vera'), (SELECT ID FROM Teams WHERE Name = 'Syntax Errors'), datetime('now'));  -- Dev
+
+-- Assign Team Members for "Merge Conflicts"
+INSERT INTO TeamMembers (EmployeeId, TeamId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Greg'), (SELECT ID FROM Teams WHERE Name = 'Merge Conflicts'), datetime('now')),  -- Lead
+    ((SELECT ID FROM Employees WHERE FName = 'Kim'), (SELECT ID FROM Teams WHERE Name = 'Merge Conflicts'), datetime('now')),  -- QA Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Nina'), (SELECT ID FROM Teams WHERE Name = 'Merge Conflicts'), datetime('now')),  -- Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Benny'), (SELECT ID FROM Teams WHERE Name = 'Merge Conflicts'), datetime('now')),  -- Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Pat'), (SELECT ID FROM Teams WHERE Name = 'Merge Conflicts'), datetime('now'));  -- Dev
+
+-- Assign Team Members for "Runtime Terrors"
+INSERT INTO TeamMembers (EmployeeId, TeamId, CreatedDate) VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Zack'), (SELECT ID FROM Teams WHERE Name = 'Runtime Terrors'), datetime('now')),  -- Lead
+    ((SELECT ID FROM Employees WHERE FName = 'Uma'), (SELECT ID FROM Teams WHERE Name = 'Runtime Terrors'), datetime('now')),  -- QA Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Oscar'), (SELECT ID FROM Teams WHERE Name = 'Runtime Terrors'), datetime('now')),  -- Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Jenny'), (SELECT ID FROM Teams WHERE Name = 'Runtime Terrors'), datetime('now')),  -- Dev
+    ((SELECT ID FROM Employees WHERE FName = 'Eli'), (SELECT ID FROM Teams WHERE Name = 'Runtime Terrors'), datetime('now'));  -- Dev
+
+-- Insert Applications
+INSERT INTO Applications (Name, Description, CreatedDate) VALUES
+    ('QuantumFlow', 'A cutting-edge cloud-based enterprise solution', datetime('now')),
+    ('PocketVerse', 'A mobile app that connects users with services in real-time', datetime('now')),
+    ('ControlHub', 'An internal administration dashboard for managing operations', datetime('now')),
+    ('SupportTrack', 'A self-hosted ticketing system for Support teams', datetime('now'));
+
+-- Insert Projects (Each Application gets at least one project)
+INSERT INTO Projects (Name, Description, StartDate, EndDate, OwnerId) VALUES
+    ('QuantumFlow Core', 'Core development of QuantumFlow platform', datetime('now'), NULL, (SELECT ID FROM Employees WHERE FName = 'Theo')), 
+    ('QuantumFlow AI Module', 'AI-powered automation for QuantumFlow', datetime('now'), NULL, (SELECT ID FROM Employees WHERE FName = 'Dan')), 
+
+    ('PocketVerse v2', 'Revamp of PocketVerse with new UX', datetime('now'), NULL, (SELECT ID FROM Employees WHERE FName = 'Morgan')),
+    ('PocketVerse Payment System', 'Integrating new mobile payment capabilities', datetime('now'), NULL, (SELECT ID FROM Employees WHERE FName = 'Omar')),
+
+    ('ControlHub Security Overhaul', 'Enhancing security for internal tools', datetime('now'), NULL, (SELECT ID FROM Employees WHERE FName = 'Paula')),
+
+    ('SupportTrack Enhancements', 'Improving SLA tracking and automation', datetime('now'), NULL, (SELECT ID FROM Employees WHERE FName = 'Rick'));
+
+-- Link Projects to Applications
+INSERT INTO ApplicationProjects (ApplicationId, ProjectId, CreatedDate) VALUES
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), (SELECT ID FROM Projects WHERE Name = 'QuantumFlow Core'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), (SELECT ID FROM Projects WHERE Name = 'QuantumFlow AI Module'), datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), (SELECT ID FROM Projects WHERE Name = 'PocketVerse v2'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), (SELECT ID FROM Projects WHERE Name = 'PocketVerse Payment System'), datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), (SELECT ID FROM Projects WHERE Name = 'ControlHub Security Overhaul'), datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'SupportTrack'), (SELECT ID FROM Projects WHERE Name = 'SupportTrack Enhancements'), datetime('now'));
+
+-- Insert Environments (Now Including QA)
+INSERT INTO Environments (Name, Description, CreatedDate) VALUES
+    ('Development', 'Used for ongoing development and testing', datetime('now')),
+    ('QA', 'Quality assurance and test automation execution', datetime('now')),
+    ('Staging', 'Pre-production environment for integration testing', datetime('now')),
+    ('Production A', 'Primary live production environment', datetime('now')),
+    ('Production B', 'Secondary production for blue-green releases', datetime('now'));
+
+-- Link Applications to Environments (Corrected Assignments)
+INSERT INTO ApplicationEnvironments (ApplicationId, EnvironmentId, CreatedDate) VALUES
+    -- QuantumFlow (Full 5 environments)
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), (SELECT ID FROM Environments WHERE Name = 'Development'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), (SELECT ID FROM Environments WHERE Name = 'QA'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), (SELECT ID FROM Environments WHERE Name = 'Staging'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), (SELECT ID FROM Environments WHERE Name = 'Production A'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), (SELECT ID FROM Environments WHERE Name = 'Production B'), datetime('now')),
+
+    -- PocketVerse (Dev, QA, Staging, Production A only)
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), (SELECT ID FROM Environments WHERE Name = 'Development'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), (SELECT ID FROM Environments WHERE Name = 'QA'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), (SELECT ID FROM Environments WHERE Name = 'Staging'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), (SELECT ID FROM Environments WHERE Name = 'Production A'), datetime('now')),
+
+    -- ControlHub (Dev, QA, Staging, Production A only)
+    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), (SELECT ID FROM Environments WHERE Name = 'Development'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), (SELECT ID FROM Environments WHERE Name = 'QA'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), (SELECT ID FROM Environments WHERE Name = 'Staging'), datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), (SELECT ID FROM Environments WHERE Name = 'Production A'), datetime('now')),
+
+    -- SupportTrack (Only Production A)
+    ((SELECT ID FROM Applications WHERE Name = 'SupportTrack'), (SELECT ID FROM Environments WHERE Name = 'Production A'), datetime('now'));
+
+-- Insert Feature Request Types (Ensures Different Requester Categories)
+INSERT INTO FeatureRequestTypes (Name, Description, CreatedDate) VALUES
+    ('Employee', 'Feature request submitted by an internal employee', datetime('now')),
+    ('Customer', 'Feature request submitted by an external customer', datetime('now')),
+    ('Manager', 'Feature request submitted by a company manager', datetime('now'));
+
+-- Insert Requesters (Mixture of Internal and External Requesters)
+INSERT INTO Requesters (Name, Email, RequestType, CreatedDate) VALUES
+    ('Alice Innovator', 'alice.innovator@example.com', 'Customer', datetime('now')),
+    ('Bob Feedback', 'bob.feedback@example.com', 'Customer', datetime('now')),
+    ('Charlie Visionary', 'charlie.visionary@example.com', 'Manager', datetime('now')),
+    ('Dana Developer', 'dana.dev@example.com', 'Employee', datetime('now')),
+    ('Eric Engineer', 'eric.engineer@example.com', 'Employee', datetime('now')),
+    ('Francine Feature', 'francine.feature@example.com', 'Customer', datetime('now'));
+
+-- Insert Feature Requests (Majority for QuantumFlow & PocketVerse)
+INSERT INTO FeatureRequests (ApplicationId, RequesterId, Title, Description, CreatedDate) VALUES
+    -- QuantumFlow Requests (Majority)
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), (SELECT ID FROM Requesters WHERE Name = 'Alice Innovator'), 
+     'AI-Powered Data Insights', 'Leverage AI to generate predictive analytics for enterprise users.', datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), (SELECT ID FROM Requesters WHERE Name = 'Bob Feedback'), 
+     'Custom Dashboard Widgets', 'Allow users to create and customize widgets on their dashboard.', datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), (SELECT ID FROM Requesters WHERE Name = 'Charlie Visionary'), 
+     'Multi-Tenant Support', 'Enable multiple organizations to share the same instance securely.', datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), (SELECT ID FROM Requesters WHERE Name = 'Dana Developer'), 
+     'API Rate Limiting', 'Introduce rate limiting to prevent abuse of public APIs.', datetime('now')),
+
+    -- PocketVerse Requests (Majority)
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), (SELECT ID FROM Requesters WHERE Name = 'Francine Feature'), 
+     'Dark Mode', 'Introduce a dark mode for better nighttime usability.', datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), (SELECT ID FROM Requesters WHERE Name = 'Bob Feedback'), 
+     'In-App Chat Support', 'Allow users to contact customer support via live chat inside the app.', datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), (SELECT ID FROM Requesters WHERE Name = 'Alice Innovator'), 
+     'Offline Mode', 'Enable offline access to key features when no internet connection is available.', datetime('now')),
+
+    -- ControlHub Requests (Only Internal Employees and Managers)
+    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), (SELECT ID FROM Requesters WHERE Name = 'Eric Engineer'), 
+     'Audit Log Improvements', 'Enhance visibility and filtering in internal system audit logs.', datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), (SELECT ID FROM Requesters WHERE Name = 'Charlie Visionary'), 
+     'Role-Based Access Controls', 'More granular permissions for internal administration teams.', datetime('now'));
+
+-- Insert Feature Request Statuses
+INSERT INTO FeatureRequestStatus (Name, Description, CreatedDate) VALUES
+    ('Proposed', 'Feature has been submitted for review', datetime('now')),
+    ('Approved', 'Feature has been approved for development', datetime('now')),
+    ('In Progress', 'Feature is currently being developed', datetime('now')),
+    ('Completed', 'Feature has been developed and deployed', datetime('now')),
+    ('Rejected', 'Feature request has been declined', datetime('now'));
+
+-- Track Feature Request Status History (Some Requests Move Through Statuses)
+INSERT INTO FeatureRequestStatusHistory (FeatureRequestId, StatusId, ChangedBy, ChangedDate, Notes) VALUES
+    ((SELECT ID FROM FeatureRequests WHERE Title = 'AI-Powered Data Insights'), 
+     (SELECT ID FROM FeatureRequestStatus WHERE Name = 'In Progress'), 
+     (SELECT ID FROM Employees WHERE FName = 'Theo'), datetime('now'), 'Currently in active development.'),
+
+    ((SELECT ID FROM FeatureRequests WHERE Title = 'Dark Mode'), 
+     (SELECT ID FROM FeatureRequestStatus WHERE Name = 'Approved'), 
+     (SELECT ID FROM Employees WHERE FName = 'Dan'), datetime('now'), 'Approved for next release cycle.'),
+
+    ((SELECT ID FROM FeatureRequests WHERE Title = 'Offline Mode'), 
+     (SELECT ID FROM FeatureRequestStatus WHERE Name = 'Completed'), 
+     (SELECT ID FROM Employees WHERE FName = 'Morgan'), datetime('now'), 'Feature has been deployed in latest app update.'),
+
+    ((SELECT ID FROM FeatureRequests WHERE Title = 'Multi-Tenant Support'), 
+     (SELECT ID FROM FeatureRequestStatus WHERE Name = 'Rejected'), 
+     (SELECT ID FROM Employees WHERE FName = 'Charlie'), datetime('now'), 'Not feasible given current infrastructure.');
+
+-- Insert Agile Task Statuses
+INSERT INTO TaskStatus (Name) VALUES
+    ('Backlog'),
+    ('To Do'),
+    ('In Progress'),
+    ('Blocked'),
+    ('Code Review'),
+    ('QA Testing'),
+    ('Done');
+
+-- Insert Priorities
+INSERT INTO Priorities (Name, Level) VALUES
+    ('Critical', 1),  -- Highest priority
+    ('High', 2),
+    ('Medium', 3),
+    ('Low', 4);
+
+
+-- Insert Tasks for Null Pointers (Feature Development)
+INSERT INTO Tasks (TaskName, Description, StartDate, DueDate, ProjectId, StatusId, Estimate, PriorityId, CreatedDate, ModifiedDate)
+VALUES
+    ('Implement User Authentication', 'Develop login and authentication system', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'QuantumFlow Core'), (SELECT ID FROM TaskStatus WHERE Name = 'To Do'), 
+        8, (SELECT ID FROM Priorities WHERE Name = 'High'), datetime('now'), datetime('now')),
+
+    ('Optimize Query Performance', 'Refactor database queries for better performance', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'ControlHub Security Overhaul'), (SELECT ID FROM TaskStatus WHERE Name = 'Backlog'), 
+        10, (SELECT ID FROM Priorities WHERE Name = 'Medium'), datetime('now'), datetime('now')),
+
+    ('Integrate OAuth2 Authentication', 'Allow third-party login using Google and Facebook', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'QuantumFlow Core'), (SELECT ID FROM TaskStatus WHERE Name = 'In Progress'), 
+        12, (SELECT ID FROM Priorities WHERE Name = 'Critical'), datetime('now'), datetime('now')),
+
+    ('Implement Data Encryption', 'Encrypt sensitive data before storing in the database', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'ControlHub Security Overhaul'), (SELECT ID FROM TaskStatus WHERE Name = 'Backlog'), 
+        15, (SELECT ID FROM Priorities WHERE Name = 'High'), datetime('now'), datetime('now')),
+
+    ('Design New Dashboard UI', 'Revamp the dashboard with a modern design', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'QuantumFlow Core'), (SELECT ID FROM TaskStatus WHERE Name = 'To Do'), 
+        10, (SELECT ID FROM Priorities WHERE Name = 'Medium'), datetime('now'), datetime('now'));
+
+-- Insert Tasks for Syntax Errors (Feature Development)
+INSERT INTO Tasks (TaskName, Description, StartDate, DueDate, ProjectId, StatusId, Estimate, PriorityId, CreatedDate, ModifiedDate)
+VALUES
+    ('Create Mobile Payment API', 'Develop API to support mobile transactions', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'PocketVerse Payment System'), (SELECT ID FROM TaskStatus WHERE Name = 'In Progress'), 
+        12, (SELECT ID FROM Priorities WHERE Name = 'Critical'), datetime('now'), datetime('now')),
+
+    ('Implement Push Notifications', 'Set up push notifications for mobile app users', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'PocketVerse v2'), (SELECT ID FROM TaskStatus WHERE Name = 'Backlog'), 
+        8, (SELECT ID FROM Priorities WHERE Name = 'High'), datetime('now'), datetime('now')),
+
+    ('Offline Mode', 'Enable offline access to key features', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'PocketVerse v2'), (SELECT ID FROM TaskStatus WHERE Name = 'To Do'), 
+        10, (SELECT ID FROM Priorities WHERE Name = 'Medium'), datetime('now'), datetime('now')),
+
+    ('Improve App Load Time', 'Optimize frontend code to reduce app load times', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'PocketVerse v2'), (SELECT ID FROM TaskStatus WHERE Name = 'In Progress'), 
+        14, (SELECT ID FROM Priorities WHERE Name = 'Critical'), datetime('now'), datetime('now')),
+
+    ('Add Multi-Language Support', 'Enable localization for international users', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'PocketVerse v2'), (SELECT ID FROM TaskStatus WHERE Name = 'To Do'), 
+        7, (SELECT ID FROM Priorities WHERE Name = 'Low'), datetime('now'), datetime('now'));
+
+-- Insert Tasks for Merge Conflicts (Bug Fixing)
+INSERT INTO Tasks (TaskName, Description, StartDate, DueDate, ProjectId, StatusId, Estimate, PriorityId, CreatedDate, ModifiedDate)
+VALUES
+    ('Bug: Fix Session Timeout Issue', 'Resolve issue where users are logged out too early', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'QuantumFlow AI Module'), (SELECT ID FROM TaskStatus WHERE Name = 'To Do'), 
+        6, (SELECT ID FROM Priorities WHERE Name = 'High'), datetime('now'), datetime('now')),
+
+    ('Bug: Resolve Payment Failure in PocketVerse', 'Investigate and fix mobile payment failures', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'PocketVerse Payment System'), (SELECT ID FROM TaskStatus WHERE Name = 'In Progress'), 
+        15, (SELECT ID FROM Priorities WHERE Name = 'Critical'), datetime('now'), datetime('now')),
+
+    ('Bug: Security Vulnerability Fix', 'Patch security loophole in authentication module', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'ControlHub Security Overhaul'), (SELECT ID FROM TaskStatus WHERE Name = 'Backlog'), 
+        10, (SELECT ID FROM Priorities WHERE Name = 'High'), datetime('now'), datetime('now')),
+
+    ('Bug: Fix Crash on Large File Upload', 'Investigate and fix crash when uploading large files', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'QuantumFlow AI Module'), (SELECT ID FROM TaskStatus WHERE Name = 'To Do'), 
+        12, (SELECT ID FROM Priorities WHERE Name = 'Medium'), datetime('now'), datetime('now')),
+
+    ('Bug: Incorrect Tax Calculation', 'Fix tax calculation on invoices', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'PocketVerse Payment System'), (SELECT ID FROM TaskStatus WHERE Name = 'In Progress'), 
+        9, (SELECT ID FROM Priorities WHERE Name = 'High'), datetime('now'), datetime('now'));
+
+-- Insert Tasks for Runtime Terrors (Feature Development)
+INSERT INTO Tasks (TaskName, Description, StartDate, DueDate, ProjectId, StatusId, Estimate, PriorityId, CreatedDate, ModifiedDate)
+VALUES
+    ('Develop AI Recommendation System', 'Build an AI-powered recommendation engine', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'QuantumFlow AI Module'), (SELECT ID FROM TaskStatus WHERE Name = 'To Do'), 
+        10, (SELECT ID FROM Priorities WHERE Name = 'High'), datetime('now'), datetime('now')),
+
+    ('Improve Backend Caching', 'Optimize backend caching for better performance', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'QuantumFlow Core'), (SELECT ID FROM TaskStatus WHERE Name = 'Backlog'), 
+        14, (SELECT ID FROM Priorities WHERE Name = 'Medium'), datetime('now'), datetime('now')),
+
+    ('Develop Chatbot Support', 'Implement an AI chatbot for customer queries', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'PocketVerse v2'), (SELECT ID FROM TaskStatus WHERE Name = 'In Progress'), 
+        12, (SELECT ID FROM Priorities WHERE Name = 'High'), datetime('now'), datetime('now')),
+
+    ('Enhance Data Export Features', 'Allow advanced data exports for reports', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'ControlHub Security Overhaul'), (SELECT ID FROM TaskStatus WHERE Name = 'Backlog'), 
+        8, (SELECT ID FROM Priorities WHERE Name = 'Low'), datetime('now'), datetime('now')),
+
+    ('Automate Deployment Process', 'Set up CI/CD for automated deployments', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'QuantumFlow Core'), (SELECT ID FROM TaskStatus WHERE Name = 'To Do'), 
+        15, (SELECT ID FROM Priorities WHERE Name = 'Critical'), datetime('now'), datetime('now'));
+
+-- Insert Test Tasks for the QA Team
+INSERT INTO Tasks (TaskName, Description, StartDate, DueDate, ProjectId, StatusId, Estimate, PriorityId, CreatedDate, ModifiedDate)
+VALUES
+    ('Test User Authentication Flow', 'Verify login, logout, and session persistence', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'QuantumFlow Core'), (SELECT ID FROM TaskStatus WHERE Name = 'QA Testing'), 
+        5, (SELECT ID FROM Priorities WHERE Name = 'Medium'), datetime('now'), datetime('now')),
+
+    ('Test Mobile Payment Transactions', 'Ensure transactions process correctly on mobile app', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'PocketVerse Payment System'), (SELECT ID FROM TaskStatus WHERE Name = 'QA Testing'), 
+        8, (SELECT ID FROM Priorities WHERE Name = 'High'), datetime('now'), datetime('now')),
+
+    ('Test Push Notifications', 'Confirm push notifications trigger correctly in the mobile app', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'PocketVerse v2'), (SELECT ID FROM TaskStatus WHERE Name = 'QA Testing'), 
+        6, (SELECT ID FROM Priorities WHERE Name = 'Medium'), datetime('now'), datetime('now')),
+
+    ('Test Security Audit Logs', 'Ensure logs capture correct security events', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'ControlHub Security Overhaul'), (SELECT ID FROM TaskStatus WHERE Name = 'QA Testing'), 
+        7, (SELECT ID FROM Priorities WHERE Name = 'High'), datetime('now'), datetime('now')),
+
+    ('Regression Test: Performance Metrics', 'Run load tests and validate performance benchmarks', datetime('now'), NULL, 
+        (SELECT ID FROM Projects WHERE Name = 'QuantumFlow AI Module'), (SELECT ID FROM TaskStatus WHERE Name = 'QA Testing'), 
+        10, (SELECT ID FROM Priorities WHERE Name = 'Critical'), datetime('now'), datetime('now'));
+
+-- Assign Tasks to Null Pointers Team
+INSERT INTO TaskAssignments (TaskId, EmployeeId, AssignedDate) VALUES
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Implement User Authentication'), (SELECT ID FROM Employees WHERE FName = 'Leo'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Optimize Query Performance'), (SELECT ID FROM Employees WHERE FName = 'Sandy'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Integrate OAuth2 Authentication'), (SELECT ID FROM Employees WHERE FName = 'Randy'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Implement Data Encryption'), (SELECT ID FROM Employees WHERE FName = 'Charlie'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Design New Dashboard UI'), (SELECT ID FROM Employees WHERE FName = 'Nancy'), datetime('now'));
+
+-- Assign Tasks to Syntax Errors Team
+INSERT INTO TaskAssignments (TaskId, EmployeeId, AssignedDate) VALUES
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Create Mobile Payment API'), (SELECT ID FROM Employees WHERE FName = 'Terry'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Implement Push Notifications'), (SELECT ID FROM Employees WHERE FName = 'Amy'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Offline Mode'), (SELECT ID FROM Employees WHERE FName = 'Felix'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Improve App Load Time'), (SELECT ID FROM Employees WHERE FName = 'Olly'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Add Multi-Language Support'), (SELECT ID FROM Employees WHERE FName = 'Vera'), datetime('now'));
+
+-- Assign Tasks to Merge Conflicts Team (Bug Fixing Only)
+INSERT INTO TaskAssignments (TaskId, EmployeeId, AssignedDate) VALUES
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Bug: Fix Session Timeout Issue'), (SELECT ID FROM Employees WHERE FName = 'Greg'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Bug: Resolve Payment Failure in PocketVerse'), (SELECT ID FROM Employees WHERE FName = 'Kim'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Bug: Security Vulnerability Fix'), (SELECT ID FROM Employees WHERE FName = 'Nina'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Bug: Fix Crash on Large File Upload'), (SELECT ID FROM Employees WHERE FName = 'Benny'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Bug: Incorrect Tax Calculation'), (SELECT ID FROM Employees WHERE FName = 'Pat'), datetime('now'));
+
+-- Assign Tasks to Runtime Terrors Team
+INSERT INTO TaskAssignments (TaskId, EmployeeId, AssignedDate) VALUES
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Develop AI Recommendation System'), (SELECT ID FROM Employees WHERE FName = 'Zack'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Improve Backend Caching'), (SELECT ID FROM Employees WHERE FName = 'Uma'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Develop Chatbot Support'), (SELECT ID FROM Employees WHERE FName = 'Oscar'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Enhance Data Export Features'), (SELECT ID FROM Employees WHERE FName = 'Jenny'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Automate Deployment Process'), (SELECT ID FROM Employees WHERE FName = 'Eli'), datetime('now'));
+
+-- Assign Test Tasks to QA Team Members
+INSERT INTO TaskAssignments (TaskId, EmployeeId, AssignedDate) VALUES
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Test User Authentication Flow'), (SELECT ID FROM Employees WHERE FName = 'Tess'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Test Mobile Payment Transactions'), (SELECT ID FROM Employees WHERE FName = 'Bugs'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Test Push Notifications'), (SELECT ID FROM Employees WHERE FName = 'Casey'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Test Security Audit Logs'), (SELECT ID FROM Employees WHERE FName = 'Sasha'), datetime('now')),
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Regression Test: Performance Metrics'), (SELECT ID FROM Employees WHERE FName = 'Debbie'), datetime('now'));
+
+-- Insert Comments for Feature Tasks
+INSERT INTO Comments (TaskId, EmployeeId, Comment, CommentDate)
+VALUES
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Implement User Authentication'), 
+     (SELECT ID FROM Employees WHERE FName = 'Leo'), 
+     'Initial login functionality implemented. Needs review before integrating OAuth.', 
+     datetime('now')),
+
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Create Mobile Payment API'), 
+     (SELECT ID FROM Employees WHERE FName = 'Terry'), 
+     'API endpoints are working, but still need to test real transactions.', 
+     datetime('now')),
+
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Offline Mode'), 
+     (SELECT ID FROM Employees WHERE FName = 'Felix'), 
+     'Data sync mechanism is complete. Needs UI adjustments.', 
+     datetime('now')),
+
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Develop AI Recommendation System'), 
+     (SELECT ID FROM Employees WHERE FName = 'Zack'), 
+     'Machine learning model training is in progress. Should be ready next sprint.', 
+     datetime('now'));
+
+-- Insert Comments for Bug Fixes
+INSERT INTO Comments (TaskId, EmployeeId, Comment, CommentDate)
+VALUES
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Bug: Fix Session Timeout Issue'), 
+     (SELECT ID FROM Employees WHERE FName = 'Greg'), 
+     'Identified a session expiration issue caused by incorrect cookie handling.', 
+     datetime('now')),
+
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Bug: Resolve Payment Failure in PocketVerse'), 
+     (SELECT ID FROM Employees WHERE FName = 'Kim'), 
+     'Issue found in the payment gateway. Working with the finance team to resolve.', 
+     datetime('now')),
+
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Bug: Fix Crash on Large File Upload'), 
+     (SELECT ID FROM Employees WHERE FName = 'Benny'), 
+     'Issue reproduced. Large file uploads causing memory overflow. Investigating solutions.', 
+     datetime('now'));
+
+-- Insert Comments for QA Test Tasks
+INSERT INTO Comments (TaskId, EmployeeId, Comment, CommentDate)
+VALUES
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Test User Authentication Flow'), 
+     (SELECT ID FROM Employees WHERE FName = 'Tess'), 
+     'Tested login/logout. Found an issue with session persistence after idle timeout.', 
+     datetime('now')),
+
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Test Mobile Payment Transactions'), 
+     (SELECT ID FROM Employees WHERE FName = 'Bugs'), 
+     'Transaction flow is mostly working, but failed with international cards.', 
+     datetime('now')),
+
+    ((SELECT ID FROM Tasks WHERE TaskName = 'Test Security Audit Logs'), 
+     (SELECT ID FROM Employees WHERE FName = 'Sasha'), 
+     'Audit logs are capturing all expected events. Passed security compliance test.', 
+     datetime('now'));
+
+-- Dev Team Logins (All Apps Except SupportTrack)
+INSERT INTO ApplicationLogins (EmployeeId, ApplicationId, Password_Hash, LastLoginDate, CreatedDate)
+SELECT e.ID, a.ID, 'hashedpassword123', datetime('now'), datetime('now')
+FROM Employees e, Applications a
+WHERE e.ID IN (
+    SELECT EmployeeId FROM TeamMembers WHERE TeamId IN (
+        SELECT ID FROM Teams WHERE Name IN ('Null Pointers', 'Syntax Errors', 'Merge Conflicts', 'Runtime Terrors')
+    )
+)
+AND a.Name IN ('QuantumFlow', 'PocketVerse', 'ControlHub');
+
+-- Support Team Logins (Only SupportTrack)
+INSERT INTO ApplicationLogins (EmployeeId, ApplicationId, Password_Hash, LastLoginDate, CreatedDate)
+SELECT e.ID, a.ID, 'hashedpassword456', datetime('now'), datetime('now')
+FROM Employees e, Applications a
+WHERE e.ID IN (
+    SELECT EmployeeId FROM TeamMembers WHERE TeamId IN (
+        SELECT ID FROM Teams WHERE Name = 'Bug Hunters'
+    )
+)
+AND a.Name = 'SupportTrack';
+
+-- QA Team Logins (All Applications)
+INSERT INTO ApplicationLogins (EmployeeId, ApplicationId, Password_Hash, LastLoginDate, CreatedDate)
+SELECT e.ID, a.ID, 'hashedpassword789', datetime('now'), datetime('now')
+FROM Employees e, Applications a
+WHERE e.ID IN (
+    SELECT EmployeeId FROM DepartmentEmployees WHERE DepartmentId = (
+        SELECT ID FROM Departments WHERE Name = 'Quality Assurance'
+    )
+);
+
+-- Project Management Team Logins (All Applications)
+INSERT INTO ApplicationLogins (EmployeeId, ApplicationId, Password_Hash, LastLoginDate, CreatedDate)
+SELECT e.ID, a.ID, 'hashedpassword901', datetime('now'), datetime('now')
+FROM Employees e, Applications a
+WHERE e.ID IN (
+    SELECT EmployeeId FROM DepartmentEmployees WHERE DepartmentId = (
+        SELECT ID FROM Departments WHERE Name = 'Project Management'
+    )
+);
+
+-- Insert Monthly Budgets for Business Units
+INSERT INTO BusinessUnitBudgets (BusinessUnitId, Year, Month, TotalBudget, SpentAmount, CreatedDate)
+VALUES
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), 2024, 1, 500000.00, 100000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), 2024, 2, 500000.00, 120000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales'), 2024, 1, 300000.00, 80000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Marketing'), 2024, 1, 200000.00, 50000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Human Resources'), 2024, 1, 150000.00, 40000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Finance'), 2024, 1, 250000.00, 90000.00, datetime('now'));
+
+-- Insert Expenses for Business Units
+INSERT INTO BusinessUnitExpenses (BusinessUnitId, ExpenseCategory, Amount, ExpenseDate, Description, CreatedDate)
+VALUES
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), 'Salaries', 95000.00, '2024-01-15', 'Monthly developer salaries', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), 'Software Licenses', 5000.00, '2024-01-20', 'Annual subscription for cloud services', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales'), 'Travel', 15000.00, '2024-01-10', 'Sales team business trip', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Marketing'), 'Advertising', 30000.00, '2024-01-05', 'Social media and Google ads', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Human Resources'), 'Employee Benefits', 20000.00, '2024-01-18', 'Health and wellness programs', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Finance'), 'Compliance Fees', 10000.00, '2024-01-22', 'Financial audits and legal compliance', datetime('now'));
+
+-- Insert Employee Salaries (Including Bonuses and Salary Types)
+INSERT INTO EmployeeSalaries (UserId, DepartmentId, SalaryAmount, BonusAmount, SalaryType, EffectiveDate, CreatedDate)
+VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Theo'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 200000.00, 25000.00, 'Full-Time', '2024-01-01', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Dan'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 180000.00, 20000.00, 'Full-Time', '2024-01-01', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Sally'), (SELECT ID FROM Departments WHERE Name = 'Sales'), 120000.00, 15000.00, 'Full-Time', '2024-01-01', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Paula'), (SELECT ID FROM Departments WHERE Name = 'Project Management'), 140000.00, 18000.00, 'Full-Time', '2024-01-01', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Rick'), (SELECT ID FROM Departments WHERE Name = 'Support'), 95000.00, 5000.00, 'Full-Time', '2024-01-01', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Kim'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 100000.00, 10000.00, 'Contractor', '2024-01-01', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Morgan'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 175000.00, 20000.00, 'Full-Time', '2024-01-01', datetime('now'));
+
+-- Insert Payroll Transactions (Monthly Payments)
+INSERT INTO PayrollTransactions (UserId, BusinessUnitId, PaymentDate, GrossSalary, BonusPaid, TaxAmount, NetSalary, PaymentMethod, Currency, CreatedDate)
+VALUES
+    ((SELECT ID FROM Employees WHERE FName = 'Theo'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), '2024-01-31', 200000.00, 25000.00, 60000.00, 165000.00, 'Direct Deposit', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Dan'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), '2024-01-31', 180000.00, 20000.00, 54000.00, 146000.00, 'Direct Deposit', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Sally'), (SELECT ID FROM BusinessUnits WHERE Name = 'Sales'), '2024-01-31', 120000.00, 15000.00, 36000.00, 99000.00, 'Direct Deposit', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Paula'), (SELECT ID FROM BusinessUnits WHERE Name = 'Project Management'), '2024-01-31', 140000.00, 18000.00, 42000.00, 116000.00, 'Direct Deposit', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Rick'), (SELECT ID FROM BusinessUnits WHERE Name = 'Support'), '2024-01-31', 95000.00, 5000.00, 28500.00, 71500.00, 'Direct Deposit', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Kim'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), '2024-01-31', 100000.00, 10000.00, 30000.00, 80000.00, 'Check', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Morgan'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), '2024-01-31', 175000.00, 20000.00, 52500.00, 142500.00, 'Direct Deposit', 'USD', datetime('now'));
+
+-- Insert Releases for QuantumFlow (Frequent Releases)
+INSERT INTO Releases (ApplicationId, Version, ReleaseDate, Notes, CreatedDate)
+VALUES
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), '1.0.0', '2024-01-10', 'Initial public release of QuantumFlow.', datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), '1.1.0', '2024-02-05', 'Added multi-tenant support and AI analytics.', datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), '1.2.0', '2024-03-01', 'Implemented OAuth authentication and performance optimizations.', datetime('now'));
+
+-- Insert Releases for PocketVerse (Frequent Updates)
+INSERT INTO Releases (ApplicationId, Version, ReleaseDate, Notes, CreatedDate)
+VALUES
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), '2.0.0', '2024-01-15', 'Revamped UI and new user experience.', datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), '2.1.0', '2024-02-10', 'Integrated mobile payments and enhanced notifications.', datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), '2.2.0', '2024-03-05', 'Added offline mode and multi-language support.', datetime('now'));
+
+-- Insert Releases for ControlHub (Less Frequent Internal Releases)
+INSERT INTO Releases (ApplicationId, Version, ReleaseDate, Notes, CreatedDate)
+VALUES
+    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), '1.0.0', '2024-01-20', 'First internal release for admin management.', datetime('now')),
+    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), '1.1.0', '2024-03-01', 'Security improvements and enhanced audit logs.', datetime('now'));
+
+-- Insert Releases for SupportTrack (Limited Releases)
+INSERT INTO Releases (ApplicationId, Version, ReleaseDate, Notes, CreatedDate)
+VALUES
+    ((SELECT ID FROM Applications WHERE Name = 'SupportTrack'), '1.0.0', '2024-02-01', 'Initial deployment of self-hosted ticketing system.', datetime('now'));

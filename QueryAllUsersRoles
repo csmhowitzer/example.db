@@ -1,8 +1,0 @@
-SELECT 
-    u.LName || ', ' || u.FName FullName,
-    u.Email,
-    r.Name
-FROM Users u
-INNER JOIN UserRoles ur ON u.ID = ur.UserId
-INNER JOIN Roles r ON ur.RoleId = r.ID;
-

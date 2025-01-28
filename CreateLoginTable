@@ -1,11 +1,20 @@
-CREATE TABLE LoginDetails (
-    UserId INTEGER PRIMARY KEY,
-    Password_Hash TEXT NOT NULL,
-    LoginRetryCnt INTEGER DEFAULT 0,
-    TimeoutDate TEXT NULL,
-    LastLoginDate TEXT NULL,
-    FOREIGN KEY (UserId) 
-        REFERENCES Users(ID) 
-            ON DELETE CASCADE
-);
+-- Purpose:
+-- - Stores authentication credentials and tracking per employee for different applications.
+-- - Supports multi-application authentication by linking logins to specific applications.
+-- - Tracks login attempts, timeouts, and last login activity.
 
+DROP TABLE IF EXISTS ApplicationLogins;
+
+CREATE TABLE ApplicationLogins (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT, -- Unique identifier for login records
+    EmployeeId INTEGER NOT NULL, -- Links to Employees table
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    Password_Hash TEXT NOT NULL, -- Hashed password for secure authentication
+    LoginRetryCnt INTEGER DEFAULT 0, -- Number of failed login attempts
+    TimeoutDate TEXT NULL, -- Timestamp when the account is temporarily locked (if applicable)
+    LastLoginDate TEXT NULL, -- Timestamp of the last successful login
+    CreatedDate TEXT NOT NULL, -- Timestamp when the login record was created
+    FOREIGN KEY (EmployeeId) REFERENCES Employees(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    UNIQUE (EmployeeId, ApplicationId) -- Ensures one login record per employee per application
+);

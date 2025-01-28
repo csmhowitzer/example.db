@@ -1,0 +1,50 @@
+-- Purpose:
+-- - Stores personal and contact information of company employees.
+-- - Used as a central entity for linking employees to departments, roles, and payroll.
+
+DROP TABLE IF EXISTS Employees;
+
+CREATE TABLE Employees (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    FName TEXT NOT NULL, -- Employee's first name
+    LName TEXT NOT NULL, -- Employee's last name
+    Email TEXT NULL UNIQUE, -- Unique email for company communications
+    CreatedDate TEXT NOT NULL, -- Timestamp when the employee record was created
+    ModifiedDate TEXT NOT NULL -- Timestamp when the record was last modified
+);
+
+-- Purpose:
+-- - Defines various roles within the company (e.g., Developer, QA, Manager).
+-- - Used for assigning permissions and structuring employee responsibilities.
+
+DROP TABLE IF EXISTS Roles;
+
+CREATE TABLE Roles (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL, -- Role name (e.g., "Software Engineer", "HR Manager")
+    Desc TEXT NULL, -- Optional description of the role
+    CreatedDate TEXT NOT NULL, -- Timestamp when this role was created
+    ModifiedDate TEXT NOT NULL -- Timestamp when this role was last updated
+);
+
+-- Purpose:
+-- - Links employees to their roles (many-to-many relationship).
+-- - Allows employees to hold multiple roles within the company.
+-- - Ensures flexibility for role assignments without modifying the Employees table.
+
+DROP TABLE IF EXISTS EmployeeRoles;
+
+CREATE TABLE EmployeeRoles (
+    EmployeeId INTEGER NOT NULL, -- Links to Employees table
+    RoleId INTEGER NOT NULL, -- Links to Roles table
+    CreatedDate TEXT NOT NULL, -- Timestamp when the role assignment was made
+    PRIMARY KEY (EmployeeId, RoleId), -- Prevents duplicate role assignments
+    FOREIGN KEY (EmployeeId)
+        REFERENCES Employees (ID)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+    FOREIGN KEY (RoleId)
+        REFERENCES Roles (ID)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
+);

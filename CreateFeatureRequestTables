@@ -1,0 +1,74 @@
+-- Purpose:
+-- - Stores predefined statuses for feature requests.
+-- - Standardizes request lifecycle tracking across applications.
+
+DROP TABLE IF EXISTS FeatureRequestStatus;
+
+CREATE TABLE FeatureRequestStatus (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Status name (e.g., "Proposed", "Approved", "In Progress", "Completed", "Rejected")
+    Description TEXT, -- Optional explanation of the status
+    CreatedDate TEXT NOT NULL -- Timestamp when the status was added
+);
+
+-- Purpose:
+-- - Stores requests for new features or changes in applications.
+-- - Supports internal (employees, managers) and external (customers) requesters.
+-- - Tracks which application each request is associated with.
+
+DROP TABLE IF EXISTS FeatureRequests;
+
+CREATE TABLE FeatureRequests (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    RequesterId INTEGER NOT NULL, -- Links to Requesters table (Employees, Customers, etc.)
+    Title TEXT NOT NULL, -- Feature request title
+    Description TEXT, -- Detailed request description
+    CreatedDate TEXT NOT NULL, -- Timestamp when the request was submitted
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    FOREIGN KEY (RequesterId) REFERENCES Requesters(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Tracks status changes for feature requests over time.
+-- - Provides historical records of feature request progress.
+
+DROP TABLE IF EXISTS FeatureRequestStatusHistory;
+
+CREATE TABLE FeatureRequestStatusHistory (
+    FeatureRequestId INTEGER NOT NULL, -- Links to FeatureRequests table
+    StatusId INTEGER NOT NULL, -- Links to FeatureRequestStatus table
+    ChangedBy INTEGER NOT NULL, -- Employee who changed the status
+    ChangedDate TEXT NOT NULL, -- Timestamp when the status was updated
+    Notes TEXT, -- Optional notes on the status change
+    PRIMARY KEY (FeatureRequestId, StatusId, ChangedDate), -- Ensures unique status change records
+    FOREIGN KEY (FeatureRequestId) REFERENCES FeatureRequests(ID) ON DELETE CASCADE,
+    FOREIGN KEY (StatusId) REFERENCES FeatureRequestStatus(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ChangedBy) REFERENCES Employees(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Stores details of individuals requesting new features.
+-- - Supports both internal (Employees, Managers) and external (Customers, Others).
+
+DROP TABLE IF EXISTS Requesters;
+
+CREATE TABLE Requesters (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL, -- Requester’s full name
+    Email TEXT NULL UNIQUE, -- Optional email for communication
+    CreatedDate TEXT NOT NULL -- Timestamp when the requester was added
+);
+
+-- Purpose:
+-- - Stores predefined categories for feature requesters.
+-- - Allows flexibility in defining requester roles.
+
+DROP TABLE IF EXISTS FeatureRequestTypes;
+
+CREATE TABLE FeatureRequestTypes (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Type of requester (e.g., "Employee", "Customer", "Manager", "Other")
+    Description TEXT, -- Optional description of the requester type
+    CreatedDate TEXT NOT NULL -- Timestamp when this requester type was added
+);

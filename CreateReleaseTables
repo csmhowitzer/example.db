@@ -1,0 +1,17 @@
+-- Purpose:
+-- - Tracks software releases within projects and applications.
+-- - Allows for organized release management and version control.
+
+DROP TABLE IF EXISTS Releases;
+
+CREATE TABLE Releases (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    ProjectId INTEGER NOT NULL, -- Links to Projects table
+    Version TEXT NOT NULL, -- Release version
+    ReleaseDate TEXT NOT NULL, -- When the release was deployed
+    ReleaseNotes TEXT, -- Optional notes about the release
+    CreatedDate TEXT NOT NULL, -- Timestamp when the release was recorded
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ProjectId) REFERENCES Projects(ID) ON DELETE CASCADE
+);

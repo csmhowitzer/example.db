@@ -1,12 +1,33 @@
-DROP TABLE Users;
-DROP TABLE Roles;
-DROP TABLE LoginDetails;
-DROP TABLE UserRoles;
-DROP TABLE TeamUsers;
+-- Drop all tables in correct dependency order
 
-DROP TABLE Projects;
-DROP TABLE TaskStatus;
-DROP TABLE Priorities;
-DROP TABLE Tasks;
-DROP TABLE TaskAssignments;
-DROP TABLE Comments;
+-- Tables with foreign key dependencies should be dropped last
+DROP TABLE IF EXISTS ApplicationLogins;
+DROP TABLE IF EXISTS TeamMembers;
+DROP TABLE IF EXISTS Teams;
+DROP TABLE IF EXISTS Comments;
+DROP TABLE IF EXISTS TaskAssignments;
+DROP TABLE IF EXISTS Tasks;
+DROP TABLE IF EXISTS Priorities;
+DROP TABLE IF EXISTS TaskStatus;
+DROP TABLE IF EXISTS Projects;
+DROP TABLE IF EXISTS ApplicationProjects;
+DROP TABLE IF EXISTS Applications;
+DROP TABLE IF EXISTS ApplicationEnvironments;
+DROP TABLE IF EXISTS Environments;
+DROP TABLE IF EXISTS Releases;
+DROP TABLE IF EXISTS FeatureRequestStatusHistory;
+DROP TABLE IF EXISTS FeatureRequests;
+DROP TABLE IF EXISTS Requesters;
+DROP TABLE IF EXISTS FeatureRequestTypes;
+DROP TABLE IF EXISTS FeatureRequestStatus;
+DROP TABLE IF EXISTS EmployeeRoles;
+DROP TABLE IF EXISTS Roles;
+DROP TABLE IF EXISTS Employees;
+DROP TABLE IF EXISTS PayrollTransactions;
+DROP TABLE IF EXISTS EmployeeSalaries;
+DROP TABLE IF EXISTS BusinessUnitExpenses;
+DROP TABLE IF EXISTS BusinessUnitBudgets;
+DROP TABLE IF EXISTS DepartmentEmployees;
+DROP TABLE IF EXISTS DepartmentBusinessUnit;
+DROP TABLE IF EXISTS Departments;
+DROP TABLE IF EXISTS BusinessUnits;

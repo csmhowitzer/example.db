@@ -1,0 +1,134 @@
+
+-- Purpose:
+-- - Stores high-level financial divisions of the company.
+-- - Used for budgeting, payroll, and financial reporting.
+
+DROP TABLE IF EXISTS BusinessUnits;
+
+CREATE TABLE BusinessUnits (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Name of the business unit
+    Description TEXT, -- Description of the business unit’s purpose
+    CreatedDate TEXT NOT NULL -- Timestamp when this record was created
+);
+
+-- Purpose:
+-- - Represents company departments such as Technology, HR, Finance, etc.
+-- - Used for organizing employees and linking them to Business Units.
+
+DROP TABLE IF EXISTS Departments;
+
+CREATE TABLE Departments (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Name of the department
+    CreatedDate TEXT NOT NULL -- Timestamp when this department was created
+);
+
+-- Purpose:
+-- - Links departments to business units in a flexible way.
+-- - Allows multiple departments to be part of a business unit.
+
+DROP TABLE IF EXISTS DepartmentBusinessUnit;
+
+CREATE TABLE DepartmentBusinessUnit (
+    DepartmentId INTEGER NOT NULL, -- Links to Departments
+    BusinessUnitId INTEGER NOT NULL, -- Links to BusinessUnits
+    CreatedDate TEXT NOT NULL, -- When this relationship was created
+    PRIMARY KEY (DepartmentId, BusinessUnitId),
+    FOREIGN KEY (DepartmentId) REFERENCES Departments(ID) ON DELETE CASCADE,
+    FOREIGN KEY (BusinessUnitId) REFERENCES BusinessUnits(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Associates employees with departments.
+-- - Supports employees belonging to multiple departments if needed.
+
+DROP TABLE IF EXISTS DepartmentEmployees;
+
+CREATE TABLE DepartmentEmployees (
+    DepartmentId INTEGER NOT NULL, -- Links to Departments
+    EmployeeId INTEGER NOT NULL, -- Links to Employees
+    CreatedDate TEXT NOT NULL, -- Timestamp when the association was created
+    PRIMARY KEY (DepartmentId, EmployeeId),
+    FOREIGN KEY (DepartmentId) REFERENCES Departments(ID) ON DELETE CASCADE,
+    FOREIGN KEY (EmployeeId) REFERENCES Employees(ID) ON DELETE CASCADE
+);
+
+
+-- Purpose:
+-- - Tracks business unit budgets on a **monthly** basis instead of just yearly.
+-- - Helps monitor financial allocations and spending trends.
+
+DROP TABLE IF EXISTS BusinessUnitBudgets;
+
+CREATE TABLE BusinessUnitBudgets (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    BusinessUnitId INTEGER NOT NULL, -- Links to BusinessUnits table
+    Year INTEGER NOT NULL, -- Fiscal year of the budget
+    Month INTEGER NOT NULL, -- Allows monthly tracking (1-12 for Jan-Dec)
+    TotalBudget DECIMAL(12,2) NOT NULL, -- Budget allocated for the month
+    SpentAmount DECIMAL(12,2) DEFAULT 0.00, -- Amount spent from budget
+    CreatedDate TEXT NOT NULL, -- When this budget entry was recorded
+    FOREIGN KEY (BusinessUnitId) REFERENCES BusinessUnits(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Separates **actual expenses** from budgeted amounts.
+-- - Allows tracking expenses by **category** and **date**.
+-- - Improves financial reporting and forecasting.
+
+DROP TABLE IF EXISTS BusniessUnitExpenses;
+
+CREATE TABLE BusinessUnitExpenses (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    BusinessUnitId INTEGER NOT NULL, -- The Business Unit responsible for the expense
+    ExpenseCategory TEXT NOT NULL, -- Category of expense (e.g., Salaries, Equipment, Travel)
+    Amount DECIMAL(12,2) NOT NULL, -- Expense amount
+    ExpenseDate TEXT NOT NULL, -- Date when the expense was made
+    Description TEXT, -- Additional details about the expense
+    CreatedDate TEXT NOT NULL, -- When this expense was recorded
+    FOREIGN KEY (BusinessUnitId) REFERENCES BusinessUnits(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Tracks **payroll payments** including salary, taxes, and bonuses.
+-- - Adds **payment method** for different payroll systems.
+-- - Includes **currency** support for international payments.
+
+DROP TABLE IF EXISTS PayrollTransactions;
+
+CREATE TABLE PayrollTransactions (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserId INTEGER NOT NULL, -- Employee receiving payroll
+    BusinessUnitId INTEGER NOT NULL, -- Business Unit paying the salary
+    PaymentDate TEXT NOT NULL, -- When the payment was made
+    GrossSalary DECIMAL(12,2) NOT NULL, -- Pre-tax salary
+    BonusPaid DECIMAL(12,2) DEFAULT 0.00, -- Additional bonus amount
+    TaxAmount DECIMAL(12,2) NOT NULL, -- Tax deducted
+    NetSalary DECIMAL(12,2) NOT NULL, -- Final take-home pay
+    PaymentMethod TEXT NOT NULL CHECK (PaymentMethod IN ('Bank Transfer', 'Check', 'Direct Deposit')), -- How the salary was paid
+    Currency TEXT NOT NULL DEFAULT 'USD', -- Currency of payment
+    CreatedDate TEXT NOT NULL, -- When this payroll transaction was recorded
+    FOREIGN KEY (UserId) REFERENCES Users(ID) ON DELETE CASCADE,
+    FOREIGN KEY (BusinessUnitId) REFERENCES BusinessUnits(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Supports **multiple salary types** (Full-Time, Contractor, etc.).
+-- - Allows **future salary changes** with **effective dates**.
+-- - Keeps salary history instead of overwriting old records.
+
+DROP TABLE IF EXISTS EmployeeSalaries;
+
+CREATE TABLE EmployeeSalaries (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserId INTEGER NOT NULL, -- Links to employee
+    DepartmentId INTEGER NOT NULL, -- Department where employee works
+    SalaryAmount DECIMAL(12,2) NOT NULL, -- Base salary
+    BonusAmount DECIMAL(12,2) DEFAULT 0.00, -- Bonus allocation
+    SalaryType TEXT NOT NULL CHECK (SalaryType IN ('Full-Time', 'Part-Time', 'Contractor')), -- Employee type
+    EffectiveDate TEXT NOT NULL, -- When this salary takes effect
+    CreatedDate TEXT NOT NULL, -- When the salary record was created
+    FOREIGN KEY (UserId) REFERENCES Users(ID) ON DELETE CASCADE,
+    FOREIGN KEY (DepartmentId) REFERENCES Departments(ID) ON DELETE CASCADE
+);

@@ -1,0 +1,58 @@
+-- Purpose:
+-- - Stores details of software applications used or developed within the company.
+-- - Provides a structured way to associate projects with specific applications.
+
+DROP TABLE IF EXISTS Applications;
+
+CREATE TABLE Applications (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Application name
+    Description TEXT, -- Optional details about the application
+    CreatedDate TEXT NOT NULL -- Timestamp when the application was added
+);
+
+-- Purpose:
+-- - Establishes a many-to-many relationship between Applications and Projects.
+-- - Allows multiple projects to belong to multiple applications.
+
+DROP TABLE IF EXISTS ApplicationProjects;
+
+CREATE TABLE ApplicationProjects (
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    ProjectId INTEGER NOT NULL, -- Links to Projects table
+    CreatedDate TEXT NOT NULL, -- Timestamp when the association was created
+    PRIMARY KEY (ApplicationId, ProjectId), -- Prevents duplicate associations
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ProjectId) REFERENCES Projects(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Links applications to multiple environments (e.g., an app can exist in Dev, Staging, and Production).
+-- - Tracks deployment history, including versioning and deployment dates.
+
+DROP TABLE IF EXISTS ApplicationEnvironments;
+
+CREATE TABLE ApplicationEnvironments (
+    ApplicationId INTEGER NOT NULL, -- Links to Applications table
+    EnvironmentId INTEGER NOT NULL, -- Links to Environments table
+    URL TEXT, -- Optional application URL for the given environment
+    LastDeployedVersion TEXT, -- Version last deployed in this environment
+    LastDeployedDate TEXT, -- Timestamp of the last deployment
+    CreatedDate TEXT NOT NULL, -- When this relationship entry was created
+    PRIMARY KEY (ApplicationId, EnvironmentId), -- Ensures unique Application-Environment pair
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(ID) ON DELETE CASCADE,
+    FOREIGN KEY (EnvironmentId) REFERENCES Environments(ID) ON DELETE CASCADE
+);
+
+-- Purpose:
+-- - Stores the list of available environments where applications can be deployed.
+-- - Ensures consistency in environment names across applications.
+
+DROP TABLE IF EXISTS Environments;
+
+CREATE TABLE Environments (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Environment name (e.g., Development, Staging, Production)
+    Description TEXT, -- Optional description of the environment
+    CreatedDate TEXT NOT NULL -- Timestamp when the environment was added
+);

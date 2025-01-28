@@ -1,0 +1,34 @@
+-- Purpose:
+-- - Stores team names and creation timestamps.
+-- - Organizes employees into logical work groups (e.g., development teams, QA teams).
+-- - Provides a structure for tracking team-based assignments.
+
+DROP TABLE IF EXISTS Teams;
+
+CREATE TABLE Teams (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE, -- Unique team name
+    CreatedDate TEXT NOT NULL -- Timestamp when the team was created
+);
+
+-- Purpose:
+-- - Links employees to teams (many-to-many relationship).
+-- - Allows employees to belong to multiple teams.
+-- - Supports team-based assignments and collaboration.
+
+DROP TABLE IF EXISTS TeamMembers;
+
+CREATE TABLE TeamMembers (
+    EmployeeId INTEGER NOT NULL, -- Links to Employees table
+    TeamId INTEGER NOT NULL, -- Links to Teams table
+    CreatedDate TEXT NOT NULL, -- Timestamp when the employee joined the team
+    PRIMARY KEY (EmployeeId, TeamId), -- Ensures unique employee-team pairing
+    FOREIGN KEY (EmployeeId) 
+        REFERENCES Employees (ID)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+    FOREIGN KEY (TeamId) 
+        REFERENCES Teams (ID)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
+);

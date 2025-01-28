@@ -1,56 +1,96 @@
+-- Purpose:
+-- - Stores project details, including name, description, start/end dates.
+-- - Tracks ownership by linking projects to employees.
+-- - Used for organizing tasks and assignments within a project.
+
+DROP TABLE IF EXISTS Projects;
+
 CREATE TABLE Projects (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    Name TEXT NOT NULL,
-    Description TEXT,
-    StartDate TEXT,
-    EndDate TEXT,
-    OwnerId INTEGER NOT NULL,
-    FOREIGN KEY (OwnerId) REFERENCES Users(ID)
+    Name TEXT NOT NULL, -- Project name
+    Description TEXT, -- Project details
+    StartDate TEXT, -- When the project starts
+    EndDate TEXT, -- When the project ends
+    OwnerId INTEGER NOT NULL, -- The employee responsible for the project
+    FOREIGN KEY (OwnerId) REFERENCES Employees(ID) ON DELETE CASCADE
 );
+
+-- Purpose:
+-- - Defines different statuses for tasks (e.g., "To Do", "In Progress", "Completed").
+-- - Ensures consistency when tracking task progress.
+
+DROP TABLE IF EXISTS TaskStatus;
 
 CREATE TABLE TaskStatus (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    Name TEXT NOT NULL UNIQUE
+    Name TEXT NOT NULL UNIQUE -- Status name (e.g., "To Do", "Blocked", "Done")
 );
+
+-- Purpose:
+-- - Defines priority levels for tasks (e.g., High, Medium, Low).
+-- - Ensures tasks are categorized based on urgency.
+
+DROP TABLE IF EXISTS Priorities;
 
 CREATE TABLE Priorities (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    Name TEXT NOT NULL UNIQUE,
-    Level INTEGER NOT NULL -- e.g., 1 for High, 2 for Medium, 3 for Low
+    Name TEXT NOT NULL UNIQUE, -- Priority label (e.g., "High", "Medium", "Low")
+    Level INTEGER NOT NULL -- Numeric priority level (1 = High, 2 = Medium, etc.)
 );
+
+-- Purpose:
+-- - Stores task details, including name, description, and deadlines.
+-- - Links tasks to projects, statuses, and priorities.
+-- - Allows for tracking task progress and assignments.
+
+DROP TABLE IF EXISTS Tasks;
 
 CREATE TABLE Tasks (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    TaskName TEXT NOT NULL UNIQUE,
-    Description TEXT,
-    StartDate TEXT,
-    DueDate TEXT,
-    ProjectId INTEGER NOT NULL,
-    StatusId INTEGER NOT NULL,
-    Estimate INTEGER,
-    PriorityId INTEGER NOT NULL,
-    CreatedDate TEXT NOT NULL,
-    ModifiedDate TEXT NOT NULL,
+    TaskName TEXT NOT NULL UNIQUE, -- Task title or name
+    Description TEXT, -- Task details
+    StartDate TEXT, -- When the task starts
+    DueDate TEXT, -- When the task is due
+    ProjectId INTEGER NOT NULL, -- Links task to a project
+    StatusId INTEGER NOT NULL, -- Links task to a status
+    Estimate INTEGER, -- Estimated effort (e.g., hours, days)
+    PriorityId INTEGER NOT NULL, -- Links task to a priority level
+    CreatedDate TEXT NOT NULL, -- When this task was created
+    ModifiedDate TEXT NOT NULL, -- Last updated timestamp
     FOREIGN KEY (ProjectId) REFERENCES Projects(ID) ON DELETE CASCADE,
     FOREIGN KEY (StatusId) REFERENCES TaskStatus(ID) ON DELETE CASCADE,
     FOREIGN KEY (PriorityId) REFERENCES Priorities(ID) ON DELETE CASCADE
 );
 
+-- Purpose:
+-- - Assigns employees to tasks (many-to-many relationship).
+-- - Allows tracking of who is responsible for each task.
+-- - Supports multiple employees per task.
+
+DROP TABLE IF EXISTS TaskAssignments;
+
 CREATE TABLE TaskAssignments (
-    TaskId INTEGER NOT NULL,
-    UserId INTEGER NOT NULL,
-    AssignedDate TEXT NOT NULL,
-    PRIMARY KEY (TaskId, UserId),
+    TaskId INTEGER NOT NULL, -- Links to Tasks table
+    EmployeeId INTEGER NOT NULL, -- Links to Employees table
+    AssignedDate TEXT NOT NULL, -- When the task was assigned
+    PRIMARY KEY (TaskId, EmployeeId), -- Ensures unique task-employee pair
     FOREIGN KEY (TaskId) REFERENCES Tasks(ID) ON DELETE CASCADE,
-    FOREIGN KEY (UserId) REFERENCES Users(ID) ON DELETE CASCADE
+    FOREIGN KEY (EmployeeId) REFERENCES Employees(ID) ON DELETE CASCADE
 );
+
+-- Purpose:
+-- - Allows employees to leave comments on tasks.
+-- - Supports collaboration and task updates.
+-- - Tracks comment timestamps for accountability.
+
+DROP TABLE IF EXISTS Comments;
 
 CREATE TABLE Comments (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    TaskId INTEGER NOT NULL,
-    UserId INTEGER NOT NULL,
-    Comment TEXT NOT NULL,
-    CommentDate TEXT NOT NULL,
+    TaskId INTEGER NOT NULL, -- Links to Tasks table
+    EmployeeId INTEGER NOT NULL, -- Links to Employees table
+    Comment TEXT NOT NULL, -- Text of the comment
+    CommentDate TEXT NOT NULL, -- Timestamp of when the comment was made
     FOREIGN KEY (TaskId) REFERENCES Tasks(ID) ON DELETE CASCADE,
-    FOREIGN KEY (UserId) REFERENCES Users(ID) ON DELETE CASCADE
+    FOREIGN KEY (EmployeeId) REFERENCES Employees(ID) ON DELETE CASCADE
 );
