@@ -1,0 +1,12 @@
+DROP TABLE Users;
+DROP TABLE Roles;
+DROP TABLE LoginDetails;
+DROP TABLE UserRoles;
+DROP TABLE TeamUsers;
+
+DROP TABLE Projects;
+DROP TABLE TaskStatus;
+DROP TABLE Priorities;
+DROP TABLE Tasks;
+DROP TABLE TaskAssignments;
+DROP TABLE Comments;

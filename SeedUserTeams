@@ -1,0 +1,76 @@
+-- Seed the Roles Table
+INSERT INTO Roles (Name, Desc, CreatedDate, ModifiedDate)
+VALUES
+    ('QA', 'Quality Assurance Specialist', datetime('now'), datetime('now')),
+    ('Lead', 'Team Leader', datetime('now'), datetime('now')),
+    ('Developer', 'Software Developer', datetime('now'), datetime('now'));
+
+-- Seed the Teams Table
+INSERT INTO Teams (Name, CreatedDate)
+VALUES
+    ('Null Pointers', datetime('now')),
+    ('Code Ninjas', datetime('now')),
+    ('Merge Conflicts', datetime('now')),
+    ('Syntax Errors', datetime('now'));
+
+-- Seed the Users Table (Team Members)
+INSERT INTO Users (FName, LName, Email, CreatedDate, ModifiedDate)
+VALUES
+    -- Null Pointers Team
+    ('Alice', 'Johnson', 'alice.johnson@example.com', datetime('now'), datetime('now')),
+    ('Bob', 'Smith', 'bob.smith@example.com', datetime('now'), datetime('now')),
+    ('Charlie', 'Brown', 'charlie.brown@example.com', datetime('now'), datetime('now')),
+    ('Diana', 'Prince', 'diana.prince@example.com', datetime('now'), datetime('now')),
+    ('Evan', 'Taylor', 'evan.taylor@example.com', datetime('now'), datetime('now')),
+
+    -- Code Ninjas Team
+    ('Fiona', 'Davis', 'fiona.davis@example.com', datetime('now'), datetime('now')),
+    ('George', 'Miller', 'george.miller@example.com', datetime('now'), datetime('now')),
+    ('Hannah', 'Wilson', 'hannah.wilson@example.com', datetime('now'), datetime('now')),
+    ('Ian', 'Scott', 'ian.scott@example.com', datetime('now'), datetime('now')),
+    ('Jack', 'White', 'jack.white@example.com', datetime('now'), datetime('now')),
+
+    -- Merge Conflicts Team
+    ('Karen', 'Green', 'karen.green@example.com', datetime('now'), datetime('now')),
+    ('Leo', 'Hall', 'leo.hall@example.com', datetime('now'), datetime('now')),
+    ('Maria', 'Adams', 'maria.adams@example.com', datetime('now'), datetime('now')),
+    ('Nathan', 'King', 'nathan.king@example.com', datetime('now'), datetime('now')),
+    ('Olivia', 'Young', 'olivia.young@example.com', datetime('now'), datetime('now')),
+
+    -- Syntax Errors Team
+    ('Peter', 'Gray', 'peter.gray@example.com', datetime('now'), datetime('now')),
+    ('Quinn', 'Baker', 'quinn.baker@example.com', datetime('now'), datetime('now')),
+    ('Rachel', 'Ward', 'rachel.ward@example.com', datetime('now'), datetime('now')),
+    ('Steve', 'Carter', 'steve.carter@example.com', datetime('now'), datetime('now')),
+    ('Tina', 'Evans', 'tina.evans@example.com', datetime('now'), datetime('now'));
+
+-- Seed the UserRoles Table
+INSERT INTO UserRoles (UserId, RoleId, CreatedDate)
+VALUES
+    -- Null Pointers Roles
+    (1, 1, datetime('now')), -- QA
+    (2, 2, datetime('now')), -- Lead
+    (3, 3, datetime('now')), -- Developer
+    (4, 3, datetime('now')), -- Developer
+    (5, 3, datetime('now')), -- Developer
+
+    -- Code Ninjas Roles
+    (6, 1, datetime('now')), -- QA
+    (7, 2, datetime('now')), -- Lead
+    (8, 3, datetime('now')), -- Developer
+    (9, 3, datetime('now')), -- Developer
+    (10, 3, datetime('now')), -- Developer
+
+    -- Merge Conflicts Roles
+    (11, 1, datetime('now')), -- QA
+    (12, 2, datetime('now')), -- Lead
+    (13, 3, datetime('now')), -- Developer
+    (14, 3, datetime('now')), -- Developer
+    (15, 3, datetime('now')), -- Developer
+
+    -- Syntax Errors Roles
+    (16, 1, datetime('now')), -- QA
+    (17, 2, datetime('now')), -- Lead
+    (18, 3, datetime('now')), -- Developer
+    (19, 3, datetime('now')), -- Developer
+    (20, 3, datetime('now')); -- Developer

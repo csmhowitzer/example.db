@@ -1,0 +1,131 @@
+-- 1. Insert new roles into the Roles table
+INSERT INTO Roles (Name, Desc, CreatedDate, ModifiedDate)
+VALUES
+    ('CFO', 'Chief Financial Officer', datetime('now'), datetime('now')),
+    ('Sales Manager', 'Oversees the sales team', datetime('now'), datetime('now')),
+    ('Sales Representative', 'Handles direct sales', datetime('now'), datetime('now')),
+    ('Marketing Manager', 'Leads marketing strategy', datetime('now'), datetime('now')),
+    ('Marketing Specialist', 'Executes marketing campaigns', datetime('now'), datetime('now')),
+    ('HR Manager', 'Manages human resources', datetime('now'), datetime('now')),
+    ('Recruiter', 'Handles hiring and talent acquisition', datetime('now'), datetime('now')),
+    ('Support Manager', 'Manages support team', datetime('now'), datetime('now')),
+    ('Support Representative', 'Provides customer/user support', datetime('now'), datetime('now')),
+    ('Project Manager', 'Coordinates projects across teams', datetime('now'), datetime('now')),
+    ('Business Analyst', 'Analyzes business needs and processes', datetime('now'), datetime('now'));
+
+-- 2. Insert new teams into the Teams table
+INSERT INTO Teams (Name, CreatedDate)
+VALUES
+    ('Sales Sharks', datetime('now')),
+    ('Marketing Maniacs', datetime('now')),
+    ('Money Mavens', datetime('now')),
+    ('HR Heroes', datetime('now')),
+    ('Support Squad', datetime('now')),
+    ('Project Pioneers', datetime('now'));
+
+-- Sales Sharks
+INSERT INTO Users (FName, LName, Email, CreatedDate, ModifiedDate)
+VALUES
+    ('Sally', 'Sale', 'sally.sale@example.com', datetime('now'), datetime('now')),   -- Sales Manager
+    ('Victor', 'Vault', 'victor.vault@example.com', datetime('now'), datetime('now')), -- Sales Rep
+    ('Wendy', 'Win', 'wendy.win@example.com', datetime('now'), datetime('now'));       -- Sales Rep
+
+-- Marketing Maniacs
+INSERT INTO Users (FName, LName, Email, CreatedDate, ModifiedDate)
+VALUES
+    ('Mark', 'Martinez', 'mark.martinez@example.com', datetime('now'), datetime('now')), -- Marketing Manager
+    ('Bella', 'Brand', 'bella.brand@example.com', datetime('now'), datetime('now')),     -- Marketing Specialist
+    ('Cody', 'Campaign', 'cody.campaign@example.com', datetime('now'), datetime('now')); -- Marketing Specialist
+
+-- Money Mavens
+INSERT INTO Users (FName, LName, Email, CreatedDate, ModifiedDate)
+VALUES
+    ('Frank', 'Funds', 'frank.funds@example.com', datetime('now'), datetime('now')), -- CFO
+    ('Anita', 'Accounts', 'anita.accounts@example.com', datetime('now'), datetime('now')); -- Accountant
+
+-- HR Heroes
+INSERT INTO Users (FName, LName, Email, CreatedDate, ModifiedDate)
+VALUES
+    ('Holly', 'Resource', 'holly.resource@example.com', datetime('now'), datetime('now')), -- HR Manager
+    ('Reed', 'Resume', 'reed.resume@example.com', datetime('now'), datetime('now'));       -- Recruiter
+
+-- Support Squad
+INSERT INTO Users (FName, LName, Email, CreatedDate, ModifiedDate)
+VALUES
+    ('Sam', 'Support', 'sam.support@example.com', datetime('now'), datetime('now')),   -- Support Manager
+    ('Tina', 'Ticket', 'tina.ticket@example.com', datetime('now'), datetime('now')),   -- Support Rep
+    ('Umar', 'Uptime', 'umar.uptime@example.com', datetime('now'), datetime('now'));   -- Support Rep
+
+-- Project Pioneers
+INSERT INTO Users (FName, LName, Email, CreatedDate, ModifiedDate)
+VALUES
+    ('Pam', 'Planner', 'pam.planner@example.com', datetime('now'), datetime('now')),     -- Project Manager
+    ('Blake', 'Brainstorm', 'blake.brainstorm@example.com', datetime('now'), datetime('now')); -- Business Analyst
+
+-- 4. Insert into UserRoles
+-- Sales Sharks (Sally: Sales Manager, Victor/Wendy: Sales Representatives)
+INSERT INTO UserRoles (UserId, RoleId, CreatedDate)
+VALUES
+    (33, (SELECT ID FROM Roles WHERE Name = 'Sales Manager'), datetime('now')),
+    (34, (SELECT ID FROM Roles WHERE Name = 'Sales Representative'), datetime('now')),
+    (35, (SELECT ID FROM Roles WHERE Name = 'Sales Representative'), datetime('now'));
+
+-- Marketing Maniacs (Mark: Marketing Manager, Bella/Cody: Marketing Specialists)
+INSERT INTO UserRoles (UserId, RoleId, CreatedDate)
+VALUES
+    (36, (SELECT ID FROM Roles WHERE Name = 'Marketing Manager'), datetime('now')),
+    (37, (SELECT ID FROM Roles WHERE Name = 'Marketing Specialist'), datetime('now')),
+    (38, (SELECT ID FROM Roles WHERE Name = 'Marketing Specialist'), datetime('now'));
+
+-- Money Mavens (Frank: CFO, Anita: Accountant)
+INSERT INTO UserRoles (UserId, RoleId, CreatedDate)
+VALUES
+    (39, (SELECT ID FROM Roles WHERE Name = 'CFO'), datetime('now')),
+    (40, (SELECT ID FROM Roles WHERE Name = 'Accountant'), datetime('now'));
+
+-- HR Heroes (Holly: HR Manager, Reed: Recruiter)
+INSERT INTO UserRoles (UserId, RoleId, CreatedDate)
+VALUES
+    (41, (SELECT ID FROM Roles WHERE Name = 'HR Manager'), datetime('now')),
+    (42, (SELECT ID FROM Roles WHERE Name = 'Recruiter'), datetime('now'));
+
+-- Support Squad (Sam: Support Manager, Tina/Umar: Support Representatives)
+INSERT INTO UserRoles (UserId, RoleId, CreatedDate)
+VALUES
+    (43, (SELECT ID FROM Roles WHERE Name = 'Support Manager'), datetime('now')),
+    (44, (SELECT ID FROM Roles WHERE Name = 'Support Representative'), datetime('now')),
+    (45, (SELECT ID FROM Roles WHERE Name = 'Support Representative'), datetime('now'));
+
+-- Project Pioneers (Pam: Project Manager, Blake: Business Analyst)
+INSERT INTO UserRoles (UserId, RoleId, CreatedDate)
+VALUES
+    (46, (SELECT ID FROM Roles WHERE Name = 'Project Manager'), datetime('now')),
+    (47, (SELECT ID FROM Roles WHERE Name = 'Business Analyst'), datetime('now'));
+
+-- If not yet created:
+-- ALTER TABLE Users ADD COLUMN TeamId INTEGER REFERENCES Teams(ID);
+
+-- Update each user with their team's ID
+UPDATE Users
+SET TeamId = (SELECT ID FROM Teams WHERE Name = 'Sales Sharks')
+WHERE ID IN (33, 34, 35);
+
+UPDATE Users
+SET TeamId = (SELECT ID FROM Teams WHERE Name = 'Marketing Maniacs')
+WHERE ID IN (36, 37, 38);
+
+UPDATE Users
+SET TeamId = (SELECT ID FROM Teams WHERE Name = 'Money Mavens')
+WHERE ID IN (39, 40);
+
+UPDATE Users
+SET TeamId = (SELECT ID FROM Teams WHERE Name = 'HR Heroes')
+WHERE ID IN (41, 42);
+
+UPDATE Users
+SET TeamId = (SELECT ID FROM Teams WHERE Name = 'Support Squad')
+WHERE ID IN (43, 44, 45);
+
+UPDATE Users
+SET TeamId = (SELECT ID FROM Teams WHERE Name = 'Project Pioneers')
+WHERE ID IN (46, 47);

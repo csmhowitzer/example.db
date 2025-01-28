@@ -1,0 +1,11 @@
+CREATE TABLE LoginDetails (
+    UserId INTEGER PRIMARY KEY,
+    Password_Hash TEXT NOT NULL,
+    LoginRetryCnt INTEGER DEFAULT 0,
+    TimeoutDate TEXT NULL,
+    LastLoginDate TEXT NULL,
+    FOREIGN KEY (UserId) 
+        REFERENCES Users(ID) 
+            ON DELETE CASCADE
+);
+

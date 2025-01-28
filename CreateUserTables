@@ -1,0 +1,52 @@
+CREATE TABLE Teams (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL UNIQUE,
+    CreatedDate TEXT NOT NULL
+);
+
+CREATE TABLE Users (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    FName TEXT NOT NULL,
+    LName TEXT NOT NULL,
+    Email TEXT NULL UNIQUE,
+    CreatedDate TEXT NOT NULL,
+    ModifiedDate TEXT NOT NULL
+);
+
+CREATE TABLE Roles (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL,
+    Desc TEXT NULL,
+    CreatedDate TEXT NOT NULL,
+    ModifiedDate TEXT NOT NULL
+);
+
+CREATE TABLE UserRoles (
+    UserId INTEGER NOT NULL,
+    RoleId INTEGER NOT NULL,
+    CreatedDate TEXT NOT NULL,
+    PRIMARY KEY (UserId, RoleId),
+    FOREIGN KEY (UserId)
+        REFERENCES Users (ID)
+            ON DELETE CASCADE
+            ON UPDATE NO ACTION,
+    FOREIGN KEY (RoleId)
+        REFERENCES Roles (ID)
+            ON DELETE CASCADE
+            ON UPDATE NO ACTION
+);
+
+CREATE TABLE TeamUsers (
+    UserId INTEGER NOT NULL,
+    TeamId INTEGER NOT NULL,
+    CreatedDate TEXT NOT NULL,
+    PRIMARY KEY (UserId, TeamId),
+    FOREIGN KEY (UserId) 
+        REFERENCES Users (ID)
+            ON DELETE CASCADE
+            ON UPDATE NO ACTION,
+    FOREIGN KEY (TeamId)
+        REFERENCES Teams (ID)
+            ON DELETE CASCADE
+            ON UPDATE NO ACTION
+);
