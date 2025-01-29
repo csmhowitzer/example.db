@@ -48,3 +48,14 @@ CREATE TABLE EmployeeRoles (
         ON DELETE CASCADE
         ON UPDATE NO ACTION
 );
+
+DROP TABLE IF EXISTS DirectReports;
+
+CREATE TABLE DirectReports (
+    EmployeeId INTEGER NOT NULL, -- The employee who reports to someone
+    ManagerId INTEGER NOT NULL, -- The person they report to
+    CreatedDate TEXT NOT NULL DEFAULT datetime('now'),
+    PRIMARY KEY (EmployeeId, ManagerId),
+    FOREIGN KEY (EmployeeId) REFERENCES Employees(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ManagerId) REFERENCES Employees(ID) ON DELETE CASCADE
+);

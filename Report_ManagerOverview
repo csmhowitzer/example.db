@@ -1,0 +1,58 @@
+
+SELECT 
+    m.FName || ' ' || m.LName AS ManagerName,
+    d.Name AS Department,
+    
+    -- Count employees directly reporting to this manager
+    COALESCE(dr.TotalDirectReports, 0) AS TotalDirectReports,
+    
+    -- Count active projects the manager oversees
+    COALESCE(ap.ActiveProjects, 0) AS ActiveProjects,
+    
+    -- Count total tasks assigned to their team members
+    COALESCE(tt.TotalTasksUnderManager, 0) AS TotalTasksUnderManager,
+    
+    -- Calculate percentage of tasks completed by the team
+    COALESCE(ROUND(
+        (SUM(CASE WHEN ts.Name = 'Done' THEN 1 ELSE 0 END) * 100.0) 
+        / NULLIF(COUNT(t.ID), 0), 2), 0.0) AS TeamCompletionPercentage
+
+FROM Employees m
+JOIN EmployeeRoles er ON m.ID = er.EmployeeId
+JOIN Roles r ON er.RoleId = r.ID
+JOIN DepartmentEmployees de ON m.ID = de.EmployeeId
+JOIN Departments d ON de.DepartmentId = d.ID
+
+-- Get direct reports count from the new DirectReports table
+LEFT JOIN (
+    SELECT ManagerId, COUNT(EmployeeId) AS TotalDirectReports
+    FROM DirectReports
+    GROUP BY ManagerId
+) dr ON m.ID = dr.ManagerId
+
+-- Get active project count
+LEFT JOIN (
+    SELECT OwnerId, COUNT(ID) AS ActiveProjects
+    FROM Projects
+    GROUP BY OwnerId
+) ap ON m.ID = ap.OwnerId
+
+-- Get total tasks under a manager's team
+LEFT JOIN (
+    SELECT dr.ManagerId, COUNT(ta.TaskId) AS TotalTasksUnderManager
+    FROM DirectReports dr
+    JOIN TaskAssignments ta ON dr.EmployeeId = ta.EmployeeId
+    GROUP BY dr.ManagerId
+) tt ON m.ID = tt.ManagerId
+
+
+-- Join with task statuses for team completion percentage
+LEFT JOIN TaskAssignments ta ON tt.ManagerId = ta.EmployeeId
+LEFT JOIN Tasks t ON t.ID = ta.TaskId
+LEFT JOIN TaskStatus ts ON t.StatusId = ts.ID
+
+WHERE r.Name LIKE '%Manager%' 
+   OR r.Name LIKE '%Director%' 
+   OR r.Name LIKE '%Lead%'
+
+GROUP BY m.ID, d.ID, dr.TotalDirectReports, ap.ActiveProjects, tt.TotalTasksUnderManager;

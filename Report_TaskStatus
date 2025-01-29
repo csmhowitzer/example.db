@@ -1,0 +1,24 @@
+
+SELECT 
+    t.TaskName,
+    t.Description AS TaskDescription,
+    p.Name AS ProjectName,
+    a.Name AS ApplicationName,
+    e.FName || ' ' || e.LName AS AssignedTo,
+    ts.Name AS TaskStatus,
+    pr.Name AS PriorityLevel,
+    t.StartDate,
+    t.DueDate,
+    CASE 
+        WHEN t.DueDate IS NULL THEN 'No deadline'
+        WHEN date(t.DueDate) < date('now') THEN 'Overdue'
+        ELSE printf('%d days remaining', julianday(t.DueDate) - julianday('now'))
+    END AS TimeRemaining
+FROM Tasks t
+LEFT JOIN Projects p ON t.ProjectId = p.ID
+LEFT JOIN Applications a ON p.ID = a.ID
+LEFT JOIN TaskAssignments ta ON t.ID = ta.TaskId
+LEFT JOIN Employees e ON ta.EmployeeId = e.ID
+LEFT JOIN TaskStatus ts ON t.StatusId = ts.ID
+LEFT JOIN Priorities pr ON t.PriorityId = pr.ID
+ORDER BY t.DueDate ASC, pr.Level, ts.ID DESC, a.Name, p.Name;

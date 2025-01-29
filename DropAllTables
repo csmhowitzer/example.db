@@ -31,3 +31,4 @@ DROP TABLE IF EXISTS DepartmentEmployees;
 DROP TABLE IF EXISTS DepartmentBusinessUnit;
 DROP TABLE IF EXISTS Departments;
 DROP TABLE IF EXISTS BusinessUnits;
+DROP TABLE IF EXISTS DirectReports;

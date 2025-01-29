@@ -1,0 +1,71 @@
+
+SELECT 
+    p.Name AS ProjectName,
+    a.Name AS ApplicationName,
+    COUNT(t.ID) AS TotalTasks,
+    SUM(CASE WHEN ts.Name = 'Backlog' THEN 1 ELSE 0 END) AS BacklogTasks,
+    SUM(CASE WHEN ts.Name = 'To Do' THEN 1 ELSE 0 END) AS ToDoTasks,
+    SUM(CASE WHEN ts.Name = 'In Progress' THEN 1 ELSE 0 END) AS InProgressTasks,
+    SUM(CASE WHEN ts.Name = 'Blocked' THEN 1 ELSE 0 END) AS BlockedTasks,
+    SUM(CASE WHEN ts.Name = 'Code Review' THEN 1 ELSE 0 END) AS CodeReviewTasks,
+    SUM(CASE WHEN ts.Name = 'QA Testing' THEN 1 ELSE 0 END) AS QATestingTasks,
+    SUM(CASE WHEN ts.Name = 'Done' THEN 1 ELSE 0 END) AS CompletedTasks,
+    ROUND(
+        (SUM(CASE WHEN ts.Name = 'Done' THEN 1 ELSE 0 END) * 100.0) / COUNT(t.ID), 2
+    ) AS CompletionPercentage
+FROM Projects p
+JOIN Applications a ON p.ID = a.ID
+LEFT JOIN Tasks t ON p.ID = t.ProjectId
+LEFT JOIN TaskStatus ts ON t.StatusId = ts.ID
+GROUP BY p.ID, a.ID;
+
+SELECT 
+    p.Name AS ProjectName,
+    a.Name AS ApplicationName,
+    p.StartDate AS ProjectStartDate,
+    p.EndDate AS ProjectEndDate,
+    COUNT(t.ID) AS TotalTasks,
+    SUM(CASE WHEN ts.Name = 'Done' THEN 1 ELSE 0 END) AS CompletedTasks,
+    COUNT(t.ID) - SUM(CASE WHEN ts.Name = 'Done' THEN 1 ELSE 0 END) AS RemainingTasks,
+    ROUND(
+        (SUM(CASE WHEN ts.Name = 'Done' THEN 1 ELSE 0 END) * 100.0) / COUNT(t.ID), 2
+    ) AS CompletionPercentage,
+    CASE 
+        WHEN COUNT(t.ID) = 0 THEN NULL
+        ELSE DATE(p.StartDate, '+' || 
+            CAST(ROUND(
+                (julianday(p.EndDate) - julianday(p.StartDate)) * 
+                (SUM(CASE WHEN ts.Name = 'Done' THEN 1 ELSE 0 END) * 1.0 / COUNT(t.ID))
+            ) AS INTEGER) || ' days')
+    END AS ProjectedFinishDate
+FROM Projects p
+JOIN Applications a ON p.ID = a.ID
+LEFT JOIN Tasks t ON p.ID = t.ProjectId
+LEFT JOIN TaskStatus ts ON t.StatusId = ts.ID
+GROUP BY p.ID, a.ID;
+
+SELECT 
+    p.Name AS ProjectName,
+    a.Name AS ApplicationName,
+    p.StartDate,
+    p.EndDate,
+    CASE 
+        WHEN p.EndDate IS NULL THEN 'No set deadline'
+        WHEN date(p.EndDate) < date('now') THEN 'Past Due'
+        WHEN date(p.EndDate) >= date('now') AND date(p.StartDate) <= date('now') THEN 'In Progress'
+        WHEN date(p.StartDate) > date('now') THEN 'Upcoming'
+        ELSE 'Unknown'
+    END AS ProjectPhase,
+    CASE 
+        WHEN p.EndDate IS NULL THEN 'No estimated completion date available'
+        WHEN date(p.EndDate) < date('now') THEN 'This project is past due!'
+        ELSE printf('%d days remaining', julianday(p.EndDate) - julianday('now'))
+    END AS TimeRemaining,
+    ROUND(
+        (SUM(CASE WHEN ts.Name = 'Done' THEN 1 ELSE 0 END) * 100.0) / NULLIF(COUNT(t.ID), 0), 2
+    ) AS CompletionPercentage
+FROM Projects p
+JOIN Applications a ON p.ID = a.ID
+LEFT JOIN Tasks t ON p.ID = t.ProjectId
+LEFT JOIN TaskStatus ts ON t.StatusId = ts.ID
+GROUP BY p.ID, a.ID;

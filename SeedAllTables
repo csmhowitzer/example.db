@@ -13,6 +13,7 @@ INSERT INTO Departments (Name, CreatedDate) VALUES
     ('Marketing', datetime('now')),
     ('Human Resources', datetime('now')),
     ('Finance', datetime('now')),
+    ('Operations', datetime('now')),
     ('Support', datetime('now'));
 
 -- Link Departments to Business Units
@@ -25,6 +26,7 @@ VALUES
     ((SELECT ID FROM Departments WHERE Name = 'Marketing'), (SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), datetime('now')),
     ((SELECT ID FROM Departments WHERE Name = 'Human Resources'), (SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), datetime('now')),
     ((SELECT ID FROM Departments WHERE Name = 'Finance'), (SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Operations'), (SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), datetime('now')),
     ((SELECT ID FROM Departments WHERE Name = 'Support'), (SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), datetime('now'));
 
 -- Insert HR Roles
@@ -39,8 +41,8 @@ INSERT INTO Employees (FName, LName, Email, CreatedDate, ModifiedDate) VALUES
 
 -- Assign HR Employees to the HR Department
 INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
-    ((SELECT ID FROM Departments WHERE Name = 'Human Resources'), (SELECT ID FROM Employees WHERE FName = 'Sarah'), datetime('now')),
-    ((SELECT ID FROM Departments WHERE Name = 'Human Resources'), (SELECT ID FROM Employees WHERE FName = 'David'), datetime('now'));
+    ((SELECT ID FROM Departments WHERE Name = 'Human Resources'), (SELECT ID FROM Employees WHERE FName = 'Holly'), datetime('now')),
+    ((SELECT ID FROM Departments WHERE Name = 'Human Resources'), (SELECT ID FROM Employees WHERE FName = 'Reed'), datetime('now'));
 
 -- Assign HR Employees to Roles
 INSERT INTO EmployeeRoles (EmployeeId, RoleId, CreatedDate) VALUES
@@ -281,6 +283,38 @@ INSERT INTO Employees (FName, LName, Email, CreatedDate, ModifiedDate) VALUES
     ('Jenny', 'Jupyter', 'jenny.jupyter@example.com', datetime('now'), datetime('now')),
     ('Eli', 'Exception', 'eli.exception@example.com', datetime('now'), datetime('now'));
 
+-- Insert Tech employees into the Employee Roles table
+INSERT INTO EmployeeRoles (RoleId, EmployeeId, CreatedDate) VALUES
+    ((SELECT ID FROM Roles WHERE Name = 'CTO'), (SELECT ID FROM Employees WHERE FName = 'Theo'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Development Director'), (SELECT ID FROM Employees WHERE FName = 'Dan'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Development Manager'), (SELECT ID FROM Employees WHERE FName = 'Morgan'), datetime('now')),
+
+    ((SELECT ID FROM Roles WHERE Name = 'Team Lead'), (SELECT ID FROM Employees WHERE FName = 'Leo'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'QA Developer'), (SELECT ID FROM Employees WHERE FName = 'Sandy'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Randy'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Charlie'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Nancy'), datetime('now')),
+
+    ((SELECT ID FROM Roles WHERE Name = 'Team Lead'), (SELECT ID FROM Employees WHERE FName = 'Terry'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'QA Developer'), (SELECT ID FROM Employees WHERE FName = 'Amy'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Felix'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Olly'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Vera'), datetime('now')),
+
+    ((SELECT ID FROM Roles WHERE Name = 'Team Lead'), (SELECT ID FROM Employees WHERE FName = 'Greg'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'QA Developer'), (SELECT ID FROM Employees WHERE FName = 'Kim'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Nina'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Benny'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Pat'), datetime('now')),
+
+    ((SELECT ID FROM Roles WHERE Name = 'Team Lead'), (SELECT ID FROM Employees WHERE FName = 'Zack'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'QA Developer'), (SELECT ID FROM Employees WHERE FName = 'Uma'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Oscar'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Jenny'), datetime('now')),
+    ((SELECT ID FROM Roles WHERE Name = 'Software Engineer'), (SELECT ID FROM Employees WHERE FName = 'Eli'), datetime('now'));
+
+
+
 -- Assign Development Employees to the Development Department
 INSERT INTO DepartmentEmployees (DepartmentId, EmployeeId, CreatedDate) VALUES
     ((SELECT ID FROM Departments WHERE Name = 'Technology'), (SELECT ID FROM Employees WHERE FName = 'Theo'), datetime('now')),
@@ -428,13 +462,13 @@ INSERT INTO FeatureRequestTypes (Name, Description, CreatedDate) VALUES
     ('Manager', 'Feature request submitted by a company manager', datetime('now'));
 
 -- Insert Requesters (Mixture of Internal and External Requesters)
-INSERT INTO Requesters (Name, Email, RequestType, CreatedDate) VALUES
-    ('Alice Innovator', 'alice.innovator@example.com', 'Customer', datetime('now')),
-    ('Bob Feedback', 'bob.feedback@example.com', 'Customer', datetime('now')),
-    ('Charlie Visionary', 'charlie.visionary@example.com', 'Manager', datetime('now')),
-    ('Dana Developer', 'dana.dev@example.com', 'Employee', datetime('now')),
-    ('Eric Engineer', 'eric.engineer@example.com', 'Employee', datetime('now')),
-    ('Francine Feature', 'francine.feature@example.com', 'Customer', datetime('now'));
+INSERT INTO Requesters (Name, Email, RequesterTypeId, CreatedDate) VALUES
+    ('Alice Innovator', 'alice.innovator@example.com', (SELECT ID FROM FeatureRequestTypes WHERE Name = 'Customer'), datetime('now')),
+    ('Bob Feedback', 'bob.feedback@example.com', (SELECT ID FROM FeatureRequestTypes WHERE Name = 'Customer'), datetime('now')),
+    ('Charlie Visionary', 'charlie.visionary@example.com', (SELECT ID FROM FeatureRequestTypes WHERE Name = 'Manager'), datetime('now')),
+    ('Dana Developer', 'dana.dev@example.com', (SELECT ID FROM FeatureRequestTypes WHERE Name = 'Employee'), datetime('now')),
+    ('Eric Engineer', 'eric.engineer@example.com', (SELECT ID FROM FeatureRequestTypes WHERE Name = 'Employee'), datetime('now')),
+    ('Francine Feature', 'francine.feature@example.com', (SELECT ID FROM FeatureRequestTypes WHERE Name = 'Customer'), datetime('now'));
 
 -- Insert Feature Requests (Majority for QuantumFlow & PocketVerse)
 INSERT INTO FeatureRequests (ApplicationId, RequesterId, Title, Description, CreatedDate) VALUES
@@ -727,9 +761,11 @@ VALUES
 
 -- Dev Team Logins (All Apps Except SupportTrack)
 INSERT INTO ApplicationLogins (EmployeeId, ApplicationId, Password_Hash, LastLoginDate, CreatedDate)
-SELECT e.ID, a.ID, 'hashedpassword123', datetime('now'), datetime('now')
+SELECT e.ID, a.ID, 'hashedpassword123' || '_' || e.ID + a.ID || e.ID, datetime('now'), datetime('now')
 FROM Employees e, Applications a
-WHERE e.ID IN (
+LEFT JOIN ApplicationLogins al ON e.ID = al.ID
+WHERE al.ID IS NULL
+AND e.ID IN (
     SELECT EmployeeId FROM TeamMembers WHERE TeamId IN (
         SELECT ID FROM Teams WHERE Name IN ('Null Pointers', 'Syntax Errors', 'Merge Conflicts', 'Runtime Terrors')
     )
@@ -738,9 +774,11 @@ AND a.Name IN ('QuantumFlow', 'PocketVerse', 'ControlHub');
 
 -- Support Team Logins (Only SupportTrack)
 INSERT INTO ApplicationLogins (EmployeeId, ApplicationId, Password_Hash, LastLoginDate, CreatedDate)
-SELECT e.ID, a.ID, 'hashedpassword456', datetime('now'), datetime('now')
+SELECT e.ID, a.ID, 'hashedpassword456' || '_' || e.ID + a.ID || e.ID, datetime('now'), datetime('now')
 FROM Employees e, Applications a
-WHERE e.ID IN (
+LEFT JOIN ApplicationLogins al ON e.ID = al.ID
+WHERE al.ID IS NULL
+AND e.ID IN (
     SELECT EmployeeId FROM TeamMembers WHERE TeamId IN (
         SELECT ID FROM Teams WHERE Name = 'Bug Hunters'
     )
@@ -749,9 +787,11 @@ AND a.Name = 'SupportTrack';
 
 -- QA Team Logins (All Applications)
 INSERT INTO ApplicationLogins (EmployeeId, ApplicationId, Password_Hash, LastLoginDate, CreatedDate)
-SELECT e.ID, a.ID, 'hashedpassword789', datetime('now'), datetime('now')
+SELECT e.ID, a.ID, 'hashedpassword789' || '_' || e.ID + a.ID || e.ID, datetime('now'), datetime('now')
 FROM Employees e, Applications a
-WHERE e.ID IN (
+LEFT JOIN ApplicationLogins al ON e.ID = al.ID
+WHERE al.ID IS NULL
+AND e.ID IN (
     SELECT EmployeeId FROM DepartmentEmployees WHERE DepartmentId = (
         SELECT ID FROM Departments WHERE Name = 'Quality Assurance'
     )
@@ -759,9 +799,11 @@ WHERE e.ID IN (
 
 -- Project Management Team Logins (All Applications)
 INSERT INTO ApplicationLogins (EmployeeId, ApplicationId, Password_Hash, LastLoginDate, CreatedDate)
-SELECT e.ID, a.ID, 'hashedpassword901', datetime('now'), datetime('now')
+SELECT e.ID, a.ID, 'hashedpassword901' || '_' || e.ID + a.ID || e.ID, datetime('now'), datetime('now')
 FROM Employees e, Applications a
-WHERE e.ID IN (
+LEFT JOIN ApplicationLogins al ON e.ID = al.ID
+WHERE al.ID IS NULL
+AND e.ID IN (
     SELECT EmployeeId FROM DepartmentEmployees WHERE DepartmentId = (
         SELECT ID FROM Departments WHERE Name = 'Project Management'
     )
@@ -770,44 +812,89 @@ WHERE e.ID IN (
 -- Insert Monthly Budgets for Business Units
 INSERT INTO BusinessUnitBudgets (BusinessUnitId, Year, Month, TotalBudget, SpentAmount, CreatedDate)
 VALUES
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 2024, 1, 500000.00, 100000.00, datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 2024, 2, 500000.00, 120000.00, datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), 2024, 1, 300000.00, 80000.00, datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), 2024, 1, 200000.00, 50000.00, datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), 2024, 1, 150000.00, 40000.00, datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), 2024, 1, 250000.00, 90000.00, datetime('now'));
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), strftime('%Y', datetime('now')), strftime('%M', datetime('now', '+1 month')), 500000.00, 100000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), strftime('%Y', datetime('now')), strftime('%M', datetime('now', '+2 month')), 500000.00, 80000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), strftime('%Y', datetime('now')), strftime('%M', datetime('now', '+3 month')), 500000.00, 87500.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), strftime('%Y', datetime('now')), strftime('%M', datetime('now', '+1 month')), 300000.00, 80000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), strftime('%Y', datetime('now')), strftime('%M', datetime('now', '+2 month')), 120000.00, 80000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), strftime('%Y', datetime('now')), strftime('%M', datetime('now', '+3 month')), 120000.00, 80000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), strftime('%Y', datetime('now')), strftime('%M', datetime('now', '+1 month')), 150000.00, 40000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), strftime('%Y', datetime('now')), strftime('%M', datetime('now', '+2 month')), 150000.00, 40000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), strftime('%Y', datetime('now')), strftime('%M', datetime('now', '+3 month')), 150000.00, 40000.00, datetime('now'));
 
--- Insert Expenses for Business Units
+-- Insert Expenses for Business Units with Dynamic Dates
 INSERT INTO BusinessUnitExpenses (BusinessUnitId, ExpenseCategory, Amount, ExpenseDate, Description, CreatedDate)
 VALUES
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 'Salaries', 95000.00, '2024-01-15', 'Monthly developer salaries', datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 'Software Licenses', 5000.00, '2024-01-20', 'Annual subscription for cloud services', datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), 'Travel', 15000.00, '2024-01-10', 'Sales team business trip', datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), 'Advertising', 30000.00, '2024-01-05', 'Social media and Google ads', datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), 'Employee Benefits', 20000.00, '2024-01-18', 'Health and wellness programs', datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), 'Compliance Fees', 10000.00, '2024-01-22', 'Financial audits and legal compliance', datetime('now'));
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 'Salaries', 95000.00, datetime('now', '+15 days'), 'Monthly developer salaries', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 'Software Licenses', 5000.00, datetime('now', '+20 days'), 'Annual subscription for cloud services', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), 'Travel', 15000.00, datetime('now', '+10 days'), 'Sales team business trip', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), 'Advertising', 30000.00, datetime('now', '+5 days'), 'Social media and Google ads', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), 'Employee Benefits', 20000.00, datetime('now', '+18 days'), 'Health and wellness programs', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), 'Compliance Fees', 10000.00, datetime('now', '+22 days'), 'Financial audits and legal compliance', datetime('now'));
 
 -- Insert Employee Salaries (Including Bonuses and Salary Types)
+-- Insert Employee Salaries with Effective Date as First Day of the Year
 INSERT INTO EmployeeSalaries (UserId, DepartmentId, SalaryAmount, BonusAmount, SalaryType, EffectiveDate, CreatedDate)
 VALUES
-    ((SELECT ID FROM Employees WHERE FName = 'Theo'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 200000.00, 25000.00, 'Full-Time', '2024-01-01', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Dan'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 180000.00, 20000.00, 'Full-Time', '2024-01-01', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Sally'), (SELECT ID FROM Departments WHERE Name = 'Sales'), 120000.00, 15000.00, 'Full-Time', '2024-01-01', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Paula'), (SELECT ID FROM Departments WHERE Name = 'Project Management'), 140000.00, 18000.00, 'Full-Time', '2024-01-01', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Rick'), (SELECT ID FROM Departments WHERE Name = 'Support'), 95000.00, 5000.00, 'Full-Time', '2024-01-01', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Kim'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 100000.00, 10000.00, 'Contractor', '2024-01-01', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Morgan'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 175000.00, 20000.00, 'Full-Time', '2024-01-01', datetime('now'));
+    ((SELECT ID FROM Employees WHERE FName = 'Theo'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 200000.00, 25000.00, 'Full-Time', datetime('now', 'start of year'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Dan'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 180000.00, 20000.00, 'Full-Time', datetime('now', 'start of year'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Sally'), (SELECT ID FROM Departments WHERE Name = 'Sales'), 120000.00, 15000.00, 'Full-Time', datetime('now', 'start of year'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Paula'), (SELECT ID FROM Departments WHERE Name = 'Project Management'), 140000.00, 18000.00, 'Full-Time', datetime('now', 'start of year'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Rick'), (SELECT ID FROM Departments WHERE Name = 'Support'), 95000.00, 5000.00, 'Full-Time', datetime('now', 'start of year'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Kim'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 100000.00, 10000.00, 'Contractor', datetime('now', 'start of year'), datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Morgan'), (SELECT ID FROM Departments WHERE Name = 'Technology'), 175000.00, 20000.00, 'Full-Time', datetime('now', 'start of year'), datetime('now'));
 
--- Insert Payroll Transactions (Monthly Payments)
+-- Insert Payroll Transactions with Dynamic Payment Dates
 INSERT INTO PayrollTransactions (UserId, BusinessUnitId, PaymentDate, GrossSalary, BonusPaid, TaxAmount, NetSalary, PaymentMethod, Currency, CreatedDate)
 VALUES
-    ((SELECT ID FROM Employees WHERE FName = 'Theo'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), '2024-01-31', 200000.00, 25000.00, 60000.00, 165000.00, 'Direct Deposit', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Dan'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), '2024-01-31', 180000.00, 20000.00, 54000.00, 146000.00, 'Direct Deposit', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Sally'), (SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), '2024-01-31', 120000.00, 15000.00, 36000.00, 99000.00, 'Direct Deposit', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Paula'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), '2024-01-31', 140000.00, 18000.00, 42000.00, 116000.00, 'Direct Deposit', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Rick'), (SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), '2024-01-31', 95000.00, 5000.00, 28500.00, 71500.00, 'Direct Deposit', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Kim'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), '2024-01-31', 100000.00, 10000.00, 30000.00, 80000.00, 'Check', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Morgan'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), '2024-01-31', 175000.00, 20000.00, 52500.00, 142500.00, 'Direct Deposit', 'USD', datetime('now'));
+    ((SELECT ID FROM Employees WHERE FName = 'Theo'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 
+     CASE 
+        WHEN strftime('%d', datetime('now')) < 15 THEN datetime('now', 'start of month', '+14 days')
+        ELSE datetime('now', 'start of month', '+1 month', '-1 day')
+     END, 
+     200000.00, 25000.00, 60000.00, 165000.00, 'Direct Deposit', 'USD', datetime('now')),
+
+    ((SELECT ID FROM Employees WHERE FName = 'Dan'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 
+     CASE 
+        WHEN strftime('%d', datetime('now')) < 15 THEN datetime('now', 'start of month', '+14 days')
+        ELSE datetime('now', 'start of month', '+1 month', '-1 day')
+     END, 
+     180000.00, 20000.00, 54000.00, 146000.00, 'Direct Deposit', 'USD', datetime('now')),
+
+    ((SELECT ID FROM Employees WHERE FName = 'Sally'), (SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), 
+     CASE 
+        WHEN strftime('%d', datetime('now')) < 15 THEN datetime('now', 'start of month', '+14 days')
+        ELSE datetime('now', 'start of month', '+1 month', '-1 day')
+     END, 
+     120000.00, 15000.00, 36000.00, 99000.00, 'Direct Deposit', 'USD', datetime('now')),
+
+    ((SELECT ID FROM Employees WHERE FName = 'Paula'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 
+     CASE 
+        WHEN strftime('%d', datetime('now')) < 15 THEN datetime('now', 'start of month', '+14 days')
+        ELSE datetime('now', 'start of month', '+1 month', '-1 day')
+     END, 
+     140000.00, 18000.00, 42000.00, 116000.00, 'Direct Deposit', 'USD', datetime('now')),
+
+    ((SELECT ID FROM Employees WHERE FName = 'Rick'), (SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), 
+     CASE 
+        WHEN strftime('%d', datetime('now')) < 15 THEN datetime('now', 'start of month', '+14 days')
+        ELSE datetime('now', 'start of month', '+1 month', '-1 day')
+     END, 
+     95000.00, 5000.00, 28500.00, 71500.00, 'Direct Deposit', 'USD', datetime('now')),
+
+    ((SELECT ID FROM Employees WHERE FName = 'Kim'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 
+     CASE 
+        WHEN strftime('%d', datetime('now')) < 15 THEN datetime('now', 'start of month', '+14 days')
+        ELSE datetime('now', 'start of month', '+1 month', '-1 day')
+     END, 
+     100000.00, 10000.00, 30000.00, 80000.00, 'Check', 'USD', datetime('now')),
+
+    ((SELECT ID FROM Employees WHERE FName = 'Morgan'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 
+     CASE 
+        WHEN strftime('%d', datetime('now')) < 15 THEN datetime('now', 'start of month', '+14 days')
+        ELSE datetime('now', 'start of month', '+1 month', '-1 day')
+     END, 
+     175000.00, 20000.00, 52500.00, 142500.00, 'Direct Deposit', 'USD', datetime('now'));
 
 -- Insert Releases for QuantumFlow (Frequent Releases)
 INSERT INTO Releases (ApplicationId, ProjectId, Version, ReleaseDate, ReleaseNotes, CreatedDate)
@@ -856,4 +943,97 @@ VALUES
     ((SELECT ID FROM Applications WHERE Name = 'SupportTrack'), 
      (SELECT ID FROM Projects WHERE Name = 'SupportTrack Enhancements'), 
      '1.0.0', datetime('now', '+22 days'), 'Initial deployment of self-hosted ticketing system.', datetime('now'));
+
+-- -- Employees reporting to their respective managers
+-- -- Managers reporting to their respective directors
+-- -- Directors reporting to C-Level executives
+INSERT INTO DirectReports (EmployeeId, ManagerId, CreatedDate)
+SELECT t1.EmployeeId, t1.ManagerId, datetime('now')
+FROM 
+(
+    SELECT d1.EmployeeId, m1.ManagerId
+    FROM Employees e
+    INNER JOIN 
+    (
+        SELECT 
+            e.ID ManagerId,
+            d.ID DeptId
+        FROM Employees e
+        INNER JOIN DepartmentEmployees de ON e.ID = de.EmployeeId
+        INNER JOIN Departments d ON de.DepartmentId = d.ID
+        INNER JOIN EmployeeRoles er ON e.ID = er.EmployeeId
+        INNER JOIN Roles r ON er.RoleId = r.ID
+        WHERE r.Name LIKE '%Manager%'
+    ) m1 ON e.ID = m1.ManagerId
+    LEFT JOIN 
+    (
+        SELECT 
+            e.ID EmployeeId,
+            d.ID DeptId
+        FROM Employees e
+        INNER JOIN DepartmentEmployees de ON e.ID = de.EmployeeId
+        INNER JOIN Departments d ON de.DepartmentId = d.ID
+        INNER JOIN EmployeeRoles er ON e.ID = er.EmployeeId
+        INNER JOIN Roles r ON er.RoleId = r.ID
+        WHERE r.Name NOT LIKE '%Manager%'
+        AND r.Name NOT LIKE '%Director%'
+    ) d1 ON m1.DeptId = d1.DeptId
+    UNION ALL
+    SELECT d1.EmployeeId, m1.ManagerId
+    FROM Employees e
+    INNER JOIN 
+    (
+        SELECT 
+            e.ID ManagerId,
+            d.ID DeptId
+        FROM Employees e
+        INNER JOIN DepartmentEmployees de ON e.ID = de.EmployeeId
+        INNER JOIN Departments d ON de.DepartmentId = d.ID
+        INNER JOIN EmployeeRoles er ON e.ID = er.EmployeeId
+        INNER JOIN Roles r ON er.RoleId = r.ID
+        WHERE r.Name LIKE '%Director%'
+    ) m1 ON e.ID = m1.ManagerId
+    LEFT JOIN 
+    (
+        SELECT 
+            e.ID EmployeeId,
+            d.ID DeptId
+        FROM Employees e
+        INNER JOIN DepartmentEmployees de ON e.ID = de.EmployeeId
+        INNER JOIN Departments d ON de.DepartmentId = d.ID
+        INNER JOIN EmployeeRoles er ON e.ID = er.EmployeeId
+        INNER JOIN Roles r ON er.RoleId = r.ID
+        WHERE r.Name LIKE '%Manager%'
+    ) d1 ON m1.DeptId = d1.DeptId
+    UNION ALL
+    SELECT d1.EmployeeId, m1.ManagerId
+    FROM Employees e
+    INNER JOIN 
+    (
+        SELECT 
+            e.ID ManagerId,
+            d.ID DeptId
+        FROM Employees e
+        INNER JOIN DepartmentEmployees de ON e.ID = de.EmployeeId
+        INNER JOIN Departments d ON de.DepartmentId = d.ID
+        INNER JOIN EmployeeRoles er ON e.ID = er.EmployeeId
+        INNER JOIN Roles r ON er.RoleId = r.ID
+        WHERE r.Name IN ('CEO', 'CFO', 'COO', 'CTO')
+    ) m1 ON e.ID = m1.ManagerId
+    LEFT JOIN 
+    (
+        SELECT 
+            e.ID EmployeeId,
+            d.ID DeptId
+        FROM Employees e
+        INNER JOIN DepartmentEmployees de ON e.ID = de.EmployeeId
+        INNER JOIN Departments d ON de.DepartmentId = d.ID
+        INNER JOIN EmployeeRoles er ON e.ID = er.EmployeeId
+        INNER JOIN Roles r ON er.RoleId = r.ID
+        WHERE r.Name LIKE '%Director%'
+        OR r.Name LIKE '%Manager%'
+    ) d1 ON m1.DeptId = d1.DeptId
+) t1
+WHERE t1.EmployeeId IS NOT NULL
+GROUP BY t1.EmployeeId, t1.ManagerId
 

@@ -124,7 +124,7 @@ CREATE TABLE BusinessUnitBudgets (
 -- - Allows tracking expenses by **category** and **date**.
 -- - Improves financial reporting and forecasting.
 
-DROP TABLE IF EXISTS BusniessUnitExpenses;
+DROP TABLE IF EXISTS BusinessUnitExpenses;
 
 CREATE TABLE BusinessUnitExpenses (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -413,7 +413,9 @@ CREATE TABLE Requesters (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     Name TEXT NOT NULL, -- Requester’s full name
     Email TEXT NULL UNIQUE, -- Optional email for communication
-    CreatedDate TEXT NOT NULL -- Timestamp when the requester was added
+    RequesterTypeId INTEGER NOT NULL, -- The categorical type of the requester ('Manager', 'Customer', 'Employee')
+    CreatedDate TEXT NOT NULL, -- Timestamp when the requester was added
+    FOREIGN KEY (RequesterTypeId) REFERENCES FeatureRequestTypes(ID)
 );
 
 -- Purpose:
@@ -598,4 +600,17 @@ CREATE TABLE TeamMembers (
         REFERENCES Teams (ID)
         ON DELETE CASCADE
         ON UPDATE NO ACTION
+);
+
+-- Purpose:
+-- - Links all managers to their employees
+DROP TABLE IF EXISTS DirectReports;
+
+CREATE TABLE DirectReports (
+    EmployeeId INTEGER NOT NULL, -- The employee who reports to someone
+    ManagerId INTEGER NOT NULL, -- The person they report to
+    CreatedDate TEXT NOT NULL,
+    PRIMARY KEY (EmployeeId, ManagerId),
+    FOREIGN KEY (EmployeeId) REFERENCES Employees(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ManagerId) REFERENCES Employees(ID) ON DELETE CASCADE
 );

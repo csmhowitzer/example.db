@@ -1,0 +1,66 @@
+
+SELECT 
+    bu.Name AS BusinessUnit, 
+    IFNULL(bb.TotalBudget, 0) AS TotalBudget, 
+    IFNULL(be.TotalExpenses, 0) AS TotalExpenses, 
+    IFNULL(pt.TotalPayroll, 0) AS TotalPayroll, 
+    (IFNULL(bb.TotalBudget, 0) - (IFNULL(be.TotalExpenses, 0) + IFNULL(pt.TotalPayroll, 0))) AS NetBalance
+FROM BusinessUnits bu
+LEFT JOIN (
+    -- Summing up all budgets per Business Unit
+    SELECT BusinessUnitId, SUM(TotalBudget) AS TotalBudget
+    FROM BusinessUnitBudgets
+    WHERE Year = strftime('%Y', 'now') -- Only for the current year
+    GROUP BY BusinessUnitId
+) bb ON bu.ID = bb.BusinessUnitId
+LEFT JOIN (
+    -- Summing up all expenses per Business Unit
+    SELECT BusinessUnitId, SUM(Amount) AS TotalExpenses
+    FROM BusinessUnitExpenses
+    WHERE strftime('%Y', ExpenseDate) = strftime('%Y', 'now') -- Only for the current year
+    GROUP BY BusinessUnitId
+) be ON bu.ID = be.BusinessUnitId
+LEFT JOIN (
+    -- Summing up all payroll payments per Business Unit
+    SELECT BusinessUnitId, SUM(NetSalary) AS TotalPayroll
+    FROM PayrollTransactions
+    WHERE strftime('%Y', PaymentDate) = strftime('%Y', 'now') -- Only for the current year
+    GROUP BY BusinessUnitId
+) pt ON bu.ID = pt.BusinessUnitId;
+
+SELECT 
+    db.Name AS BusinessUnit,
+    d.Name AS Department, 
+    IFNULL(db.TotalBudget, 0) AS TotalBudget, 
+    IFNULL(de.TotalExpenses, 0) AS TotalExpenses, 
+    IFNULL(dp.TotalPayroll, 0) AS TotalPayroll, 
+    (IFNULL(db.TotalBudget, 0) - (IFNULL(de.TotalExpenses, 0) + IFNULL(dp.TotalPayroll, 0))) AS NetBalance
+FROM Departments d
+LEFT JOIN (
+    -- Summing up all budgets per Department
+    SELECT DepartmentId, (SELECT Name FROM BusinessUnits WHERE ID = dbu.BusinessUnitId) AS Name, SUM(TotalBudget) AS TotalBudget
+    FROM DepartmentBusinessUnit dbu
+    JOIN BusinessUnitBudgets bub ON dbu.BusinessUnitId = bub.BusinessUnitId
+    WHERE bub.Year = strftime('%Y', 'now') -- Only for the current year
+    GROUP BY DepartmentId, Name
+) db ON d.ID = db.DepartmentId
+LEFT JOIN (
+    -- Summing up all expenses per Department
+    SELECT de.DepartmentId, SUM(be.Amount) AS TotalExpenses
+    FROM DepartmentEmployees de
+    JOIN Employees e ON de.EmployeeId = e.ID
+    JOIN BusinessUnitExpenses be ON e.ID = be.BusinessUnitId
+    WHERE strftime('%Y', be.ExpenseDate) = strftime('%Y', 'now') -- Only for the current year
+    GROUP BY de.DepartmentId
+) de ON d.ID = de.DepartmentId
+LEFT JOIN (
+    -- Summing up all payroll payments per Department
+    SELECT es.DepartmentId, SUM(pt.NetSalary) AS TotalPayroll
+    FROM EmployeeSalaries es
+    JOIN PayrollTransactions pt ON es.UserId = pt.UserId
+    WHERE strftime('%Y', pt.PaymentDate) = strftime('%Y', 'now') -- Only for the current year
+    GROUP BY es.DepartmentId
+) dp ON d.ID = dp.DepartmentId
+ORDER BY db.Name, d.Name;
+
+

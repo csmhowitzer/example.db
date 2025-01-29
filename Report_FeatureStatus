@@ -1,0 +1,18 @@
+
+SELECT 
+    fr.Title AS FeatureName,
+    fr.Description AS FeatureDescription,
+    a.Name AS ApplicationName,
+    p.Name AS ProjectName,
+    r.Name AS RequesterName,
+    fr.CreatedDate AS RequestDate,
+    fs.Name AS FeatureStatus
+FROM FeatureRequests fr
+LEFT JOIN Applications a ON fr.ApplicationId = a.ID
+LEFT JOIN ApplicationProjects ap ON a.ID = ap.ApplicationId
+LEFT JOIN Projects p ON ap.ProjectId = p.ID
+LEFT JOIN Requesters r ON fr.RequesterId = r.ID
+LEFT JOIN FeatureRequestStatusHistory fsh ON fr.ID = fsh.FeatureRequestId
+LEFT JOIN FeatureRequestStatus fs ON fsh.StatusId = fs.ID
+ORDER BY fr.CreatedDate DESC;
+SELECT * FROM FeatureRequestStatusHistory;
