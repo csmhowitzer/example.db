@@ -1,0 +1,106 @@
+-- A report of tables and records that were added
+SELECT
+    t1.table_name,
+    t1.record_count
+FROM 
+(
+    SELECT table_name, record_count FROM (
+        SELECT 'ApplicationEnvironments' AS table_name, COUNT(*) AS record_count FROM ApplicationEnvironments UNION ALL
+        SELECT 'ApplicationLogins', COUNT(*) FROM ApplicationLogins UNION ALL
+        SELECT 'ApplicationProjects', COUNT(*) FROM ApplicationProjects UNION ALL
+        SELECT 'Applications', COUNT(*) FROM Applications UNION ALL
+        SELECT 'BusinessUnitBudgets', COUNT(*) FROM BusinessUnitBudgets UNION ALL
+        SELECT 'BusinessUnitExpenses', COUNT(*) FROM BusinessUnitExpenses UNION ALL
+        SELECT 'BusinessUnits', COUNT(*) FROM BusinessUnits UNION ALL
+        SELECT 'Comments', COUNT(*) FROM Comments UNION ALL
+        SELECT 'DepartmentBusinessUnit', COUNT(*) FROM DepartmentBusinessUnit UNION ALL
+        SELECT 'DepartmentEmployees', COUNT(*) FROM DepartmentEmployees UNION ALL
+        SELECT 'Departments', COUNT(*) FROM Departments UNION ALL
+        SELECT 'EmployeeRoles', COUNT(*) FROM EmployeeRoles UNION ALL
+        SELECT 'EmployeeSalaries', COUNT(*) FROM EmployeeSalaries UNION ALL
+        SELECT 'Employees', COUNT(*) FROM Employees UNION ALL
+        SELECT 'Environments', COUNT(*) FROM Environments UNION ALL
+        SELECT 'FeatureRequestStatus', COUNT(*) FROM FeatureRequestStatus UNION ALL
+        SELECT 'FeatureRequestStatusHistory', COUNT(*) FROM FeatureRequestStatusHistory UNION ALL
+        SELECT 'FeatureRequestTypes', COUNT(*) FROM FeatureRequestTypes UNION ALL
+        SELECT 'FeatureRequests', COUNT(*) FROM FeatureRequests UNION ALL
+        SELECT 'PayrollTransactions', COUNT(*) FROM PayrollTransactions UNION ALL
+        SELECT 'Priorities', COUNT(*) FROM Priorities UNION ALL
+        SELECT 'Projects', COUNT(*) FROM Projects UNION ALL
+        SELECT 'Releases', COUNT(*) FROM Releases UNION ALL
+        SELECT 'Requesters', COUNT(*) FROM Requesters UNION ALL
+        SELECT 'Roles', COUNT(*) FROM Roles UNION ALL
+        SELECT 'TaskAssignments', COUNT(*) FROM TaskAssignments UNION ALL
+        SELECT 'TaskStatus', COUNT(*) FROM TaskStatus UNION ALL
+        SELECT 'Tasks', COUNT(*) FROM Tasks UNION ALL
+        SELECT 'TeamMembers', COUNT(*) FROM TeamMembers UNION ALL
+        SELECT 'Teams', COUNT(*) FROM Teams
+    )
+) t1
+WHERE t1.record_count = 0;
+SELECT '';
+SELECT table_name, record_count FROM (
+    SELECT 'ApplicationEnvironments' AS table_name, COUNT(*) AS record_count FROM ApplicationEnvironments UNION ALL
+    SELECT 'ApplicationLogins', COUNT(*) FROM ApplicationLogins UNION ALL
+    SELECT 'ApplicationProjects', COUNT(*) FROM ApplicationProjects UNION ALL
+    SELECT 'Applications', COUNT(*) FROM Applications UNION ALL
+    SELECT 'BusinessUnitBudgets', COUNT(*) FROM BusinessUnitBudgets UNION ALL
+    SELECT 'BusinessUnitExpenses', COUNT(*) FROM BusinessUnitExpenses UNION ALL
+    SELECT 'BusinessUnits', COUNT(*) FROM BusinessUnits UNION ALL
+    SELECT 'Comments', COUNT(*) FROM Comments UNION ALL
+    SELECT 'DepartmentBusinessUnit', COUNT(*) FROM DepartmentBusinessUnit UNION ALL
+    SELECT 'DepartmentEmployees', COUNT(*) FROM DepartmentEmployees UNION ALL
+    SELECT 'Departments', COUNT(*) FROM Departments UNION ALL
+    SELECT 'EmployeeRoles', COUNT(*) FROM EmployeeRoles UNION ALL
+    SELECT 'EmployeeSalaries', COUNT(*) FROM EmployeeSalaries UNION ALL
+    SELECT 'Employees', COUNT(*) FROM Employees UNION ALL
+    SELECT 'Environments', COUNT(*) FROM Environments UNION ALL
+    SELECT 'FeatureRequestStatus', COUNT(*) FROM FeatureRequestStatus UNION ALL
+    SELECT 'FeatureRequestStatusHistory', COUNT(*) FROM FeatureRequestStatusHistory UNION ALL
+    SELECT 'FeatureRequestTypes', COUNT(*) FROM FeatureRequestTypes UNION ALL
+    SELECT 'FeatureRequests', COUNT(*) FROM FeatureRequests UNION ALL
+    SELECT 'PayrollTransactions', COUNT(*) FROM PayrollTransactions UNION ALL
+    SELECT 'Priorities', COUNT(*) FROM Priorities UNION ALL
+    SELECT 'Projects', COUNT(*) FROM Projects UNION ALL
+    SELECT 'Releases', COUNT(*) FROM Releases UNION ALL
+    SELECT 'Requesters', COUNT(*) FROM Requesters UNION ALL
+    SELECT 'Roles', COUNT(*) FROM Roles UNION ALL
+    SELECT 'TaskAssignments', COUNT(*) FROM TaskAssignments UNION ALL
+    SELECT 'TaskStatus', COUNT(*) FROM TaskStatus UNION ALL
+    SELECT 'Tasks', COUNT(*) FROM Tasks UNION ALL
+    SELECT 'TeamMembers', COUNT(*) FROM TeamMembers UNION ALL
+    SELECT 'Teams', COUNT(*) FROM Teams
+)
+UNION ALL
+SELECT 'Total' AS table_name, SUM(record_count) FROM (
+    SELECT COUNT(*) AS record_count FROM ApplicationEnvironments UNION ALL
+    SELECT COUNT(*) FROM ApplicationLogins UNION ALL
+    SELECT COUNT(*) FROM ApplicationProjects UNION ALL
+    SELECT COUNT(*) FROM Applications UNION ALL
+    SELECT COUNT(*) FROM BusinessUnitBudgets UNION ALL
+    SELECT COUNT(*) FROM BusinessUnitExpenses UNION ALL
+    SELECT COUNT(*) FROM BusinessUnits UNION ALL
+    SELECT COUNT(*) FROM Comments UNION ALL
+    SELECT COUNT(*) FROM DepartmentBusinessUnit UNION ALL
+    SELECT COUNT(*) FROM DepartmentEmployees UNION ALL
+    SELECT COUNT(*) FROM Departments UNION ALL
+    SELECT COUNT(*) FROM EmployeeRoles UNION ALL
+    SELECT COUNT(*) FROM EmployeeSalaries UNION ALL
+    SELECT COUNT(*) FROM Employees UNION ALL
+    SELECT COUNT(*) FROM Environments UNION ALL
+    SELECT COUNT(*) FROM FeatureRequestStatus UNION ALL
+    SELECT COUNT(*) FROM FeatureRequestStatusHistory UNION ALL
+    SELECT COUNT(*) FROM FeatureRequestTypes UNION ALL
+    SELECT COUNT(*) FROM FeatureRequests UNION ALL
+    SELECT COUNT(*) FROM PayrollTransactions UNION ALL
+    SELECT COUNT(*) FROM Priorities UNION ALL
+    SELECT COUNT(*) FROM Projects UNION ALL
+    SELECT COUNT(*) FROM Releases UNION ALL
+    SELECT COUNT(*) FROM Requesters UNION ALL
+    SELECT COUNT(*) FROM Roles UNION ALL
+    SELECT COUNT(*) FROM TaskAssignments UNION ALL
+    SELECT COUNT(*) FROM TaskStatus UNION ALL
+    SELECT COUNT(*) FROM Tasks UNION ALL
+    SELECT COUNT(*) FROM TeamMembers UNION ALL
+    SELECT COUNT(*) FROM Teams
+);

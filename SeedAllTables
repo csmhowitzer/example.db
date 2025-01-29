@@ -2,7 +2,7 @@
 INSERT INTO BusinessUnits (Name, Description, CreatedDate) VALUES
     ('Technology & Product', 'Handles Engineering, QA, and Project Management', datetime('now')),
     ('Sales & Marketing', 'Handles Sales and Marketing', datetime('now')),
-    ('Operations & HR', 'Handles Human Resources, Finance, and Support');
+    ('Operations & HR', 'Handles Human Resources, Finance, and Support', datetime('now'));
 
 -- Insert Departments
 INSERT INTO Departments (Name, CreatedDate) VALUES
@@ -511,7 +511,6 @@ INSERT INTO Priorities (Name, Level) VALUES
     ('Medium', 3),
     ('Low', 4);
 
-
 -- Insert Tasks for Null Pointers (Feature Development)
 INSERT INTO Tasks (TaskName, Description, StartDate, DueDate, ProjectId, StatusId, Estimate, PriorityId, CreatedDate, ModifiedDate)
 VALUES
@@ -771,22 +770,22 @@ WHERE e.ID IN (
 -- Insert Monthly Budgets for Business Units
 INSERT INTO BusinessUnitBudgets (BusinessUnitId, Year, Month, TotalBudget, SpentAmount, CreatedDate)
 VALUES
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), 2024, 1, 500000.00, 100000.00, datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), 2024, 2, 500000.00, 120000.00, datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales'), 2024, 1, 300000.00, 80000.00, datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Marketing'), 2024, 1, 200000.00, 50000.00, datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Human Resources'), 2024, 1, 150000.00, 40000.00, datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Finance'), 2024, 1, 250000.00, 90000.00, datetime('now'));
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 2024, 1, 500000.00, 100000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 2024, 2, 500000.00, 120000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), 2024, 1, 300000.00, 80000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), 2024, 1, 200000.00, 50000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), 2024, 1, 150000.00, 40000.00, datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), 2024, 1, 250000.00, 90000.00, datetime('now'));
 
 -- Insert Expenses for Business Units
 INSERT INTO BusinessUnitExpenses (BusinessUnitId, ExpenseCategory, Amount, ExpenseDate, Description, CreatedDate)
 VALUES
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), 'Salaries', 95000.00, '2024-01-15', 'Monthly developer salaries', datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), 'Software Licenses', 5000.00, '2024-01-20', 'Annual subscription for cloud services', datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales'), 'Travel', 15000.00, '2024-01-10', 'Sales team business trip', datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Marketing'), 'Advertising', 30000.00, '2024-01-05', 'Social media and Google ads', datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Human Resources'), 'Employee Benefits', 20000.00, '2024-01-18', 'Health and wellness programs', datetime('now')),
-    ((SELECT ID FROM BusinessUnits WHERE Name = 'Finance'), 'Compliance Fees', 10000.00, '2024-01-22', 'Financial audits and legal compliance', datetime('now'));
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 'Salaries', 95000.00, '2024-01-15', 'Monthly developer salaries', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), 'Software Licenses', 5000.00, '2024-01-20', 'Annual subscription for cloud services', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), 'Travel', 15000.00, '2024-01-10', 'Sales team business trip', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), 'Advertising', 30000.00, '2024-01-05', 'Social media and Google ads', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), 'Employee Benefits', 20000.00, '2024-01-18', 'Health and wellness programs', datetime('now')),
+    ((SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), 'Compliance Fees', 10000.00, '2024-01-22', 'Financial audits and legal compliance', datetime('now'));
 
 -- Insert Employee Salaries (Including Bonuses and Salary Types)
 INSERT INTO EmployeeSalaries (UserId, DepartmentId, SalaryAmount, BonusAmount, SalaryType, EffectiveDate, CreatedDate)
@@ -802,35 +801,59 @@ VALUES
 -- Insert Payroll Transactions (Monthly Payments)
 INSERT INTO PayrollTransactions (UserId, BusinessUnitId, PaymentDate, GrossSalary, BonusPaid, TaxAmount, NetSalary, PaymentMethod, Currency, CreatedDate)
 VALUES
-    ((SELECT ID FROM Employees WHERE FName = 'Theo'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), '2024-01-31', 200000.00, 25000.00, 60000.00, 165000.00, 'Direct Deposit', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Dan'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), '2024-01-31', 180000.00, 20000.00, 54000.00, 146000.00, 'Direct Deposit', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Sally'), (SELECT ID FROM BusinessUnits WHERE Name = 'Sales'), '2024-01-31', 120000.00, 15000.00, 36000.00, 99000.00, 'Direct Deposit', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Paula'), (SELECT ID FROM BusinessUnits WHERE Name = 'Project Management'), '2024-01-31', 140000.00, 18000.00, 42000.00, 116000.00, 'Direct Deposit', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Rick'), (SELECT ID FROM BusinessUnits WHERE Name = 'Support'), '2024-01-31', 95000.00, 5000.00, 28500.00, 71500.00, 'Direct Deposit', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Kim'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), '2024-01-31', 100000.00, 10000.00, 30000.00, 80000.00, 'Check', 'USD', datetime('now')),
-    ((SELECT ID FROM Employees WHERE FName = 'Morgan'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology'), '2024-01-31', 175000.00, 20000.00, 52500.00, 142500.00, 'Direct Deposit', 'USD', datetime('now'));
+    ((SELECT ID FROM Employees WHERE FName = 'Theo'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), '2024-01-31', 200000.00, 25000.00, 60000.00, 165000.00, 'Direct Deposit', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Dan'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), '2024-01-31', 180000.00, 20000.00, 54000.00, 146000.00, 'Direct Deposit', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Sally'), (SELECT ID FROM BusinessUnits WHERE Name = 'Sales & Marketing'), '2024-01-31', 120000.00, 15000.00, 36000.00, 99000.00, 'Direct Deposit', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Paula'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), '2024-01-31', 140000.00, 18000.00, 42000.00, 116000.00, 'Direct Deposit', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Rick'), (SELECT ID FROM BusinessUnits WHERE Name = 'Operations & HR'), '2024-01-31', 95000.00, 5000.00, 28500.00, 71500.00, 'Direct Deposit', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Kim'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), '2024-01-31', 100000.00, 10000.00, 30000.00, 80000.00, 'Check', 'USD', datetime('now')),
+    ((SELECT ID FROM Employees WHERE FName = 'Morgan'), (SELECT ID FROM BusinessUnits WHERE Name = 'Technology & Product'), '2024-01-31', 175000.00, 20000.00, 52500.00, 142500.00, 'Direct Deposit', 'USD', datetime('now'));
 
 -- Insert Releases for QuantumFlow (Frequent Releases)
-INSERT INTO Releases (ApplicationId, Version, ReleaseDate, Notes, CreatedDate)
+INSERT INTO Releases (ApplicationId, ProjectId, Version, ReleaseDate, ReleaseNotes, CreatedDate)
 VALUES
-    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), '1.0.0', '2024-01-10', 'Initial public release of QuantumFlow.', datetime('now')),
-    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), '1.1.0', '2024-02-05', 'Added multi-tenant support and AI analytics.', datetime('now')),
-    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), '1.2.0', '2024-03-01', 'Implemented OAuth authentication and performance optimizations.', datetime('now'));
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), 
+     (SELECT ID FROM Projects WHERE Name = 'QuantumFlow Core'), 
+     '1.0.0', datetime('now', '+0 days'), 'Initial public release of QuantumFlow.', datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), 
+     (SELECT ID FROM Projects WHERE Name = 'QuantumFlow AI Module'), 
+     '1.1.0', datetime('now', '+26 days'), 'Added AI-powered automation and predictive analytics.', datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'QuantumFlow'), 
+     (SELECT ID FROM Projects WHERE Name = 'QuantumFlow Core'), 
+     '1.2.0', datetime('now', '+51 days'), 'Implemented OAuth authentication and performance optimizations.', datetime('now'));
 
 -- Insert Releases for PocketVerse (Frequent Updates)
-INSERT INTO Releases (ApplicationId, Version, ReleaseDate, Notes, CreatedDate)
+INSERT INTO Releases (ApplicationId, ProjectId, Version, ReleaseDate, ReleaseNotes, CreatedDate)
 VALUES
-    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), '2.0.0', '2024-01-15', 'Revamped UI and new user experience.', datetime('now')),
-    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), '2.1.0', '2024-02-10', 'Integrated mobile payments and enhanced notifications.', datetime('now')),
-    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), '2.2.0', '2024-03-05', 'Added offline mode and multi-language support.', datetime('now'));
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), 
+     (SELECT ID FROM Projects WHERE Name = 'PocketVerse v2'), 
+     '2.0.0', datetime('now', '+5 days'), 'Revamped UI with better user experience.', datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), 
+     (SELECT ID FROM Projects WHERE Name = 'PocketVerse Payment System'), 
+     '2.1.0', datetime('now', '+31 days'), 'Integrated mobile payments and enhanced notifications.', datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'PocketVerse'), 
+     (SELECT ID FROM Projects WHERE Name = 'PocketVerse v2'), 
+     '2.2.0', datetime('now', '+54 days'), 'Added offline mode and multi-language support.', datetime('now'));
 
 -- Insert Releases for ControlHub (Less Frequent Internal Releases)
-INSERT INTO Releases (ApplicationId, Version, ReleaseDate, Notes, CreatedDate)
+INSERT INTO Releases (ApplicationId, ProjectId, Version, ReleaseDate, ReleaseNotes, CreatedDate)
 VALUES
-    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), '1.0.0', '2024-01-20', 'First internal release for admin management.', datetime('now')),
-    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), '1.1.0', '2024-03-01', 'Security improvements and enhanced audit logs.', datetime('now'));
+    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), 
+     (SELECT ID FROM Projects WHERE Name = 'ControlHub Security Overhaul'), 
+     '1.0.0', datetime('now', '+10 days'), 'First internal release with basic admin features.', datetime('now')),
+
+    ((SELECT ID FROM Applications WHERE Name = 'ControlHub'), 
+     (SELECT ID FROM Projects WHERE Name = 'ControlHub Security Overhaul'), 
+     '1.1.0', datetime('now', '+51 days'), 'Security improvements and enhanced audit logs.', datetime('now'));
 
 -- Insert Releases for SupportTrack (Limited Releases)
-INSERT INTO Releases (ApplicationId, Version, ReleaseDate, Notes, CreatedDate)
+INSERT INTO Releases (ApplicationId, ProjectId, Version, ReleaseDate, ReleaseNotes, CreatedDate)
 VALUES
-    ((SELECT ID FROM Applications WHERE Name = 'SupportTrack'), '1.0.0', '2024-02-01', 'Initial deployment of self-hosted ticketing system.', datetime('now'));
+    ((SELECT ID FROM Applications WHERE Name = 'SupportTrack'), 
+     (SELECT ID FROM Projects WHERE Name = 'SupportTrack Enhancements'), 
+     '1.0.0', datetime('now', '+22 days'), 'Initial deployment of self-hosted ticketing system.', datetime('now'));
+
